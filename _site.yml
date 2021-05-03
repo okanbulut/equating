@@ -1,9 +1,18 @@
-name: "my-website"
+name: "Equating-Using-R"
 output_dir: "docs"
 navbar:
-  title: "My Website"
+  title: "Equating Using R"
   left:
     - text: "Home"
+      icon: fa-home
       href: index.html
-    - text: "About"
-      href: about.html
+    - text: "CTT"
+      icon: fa-battery-half
+      href: ctt.html
+    - text: "IRT"
+      icon: fa-battery-full
+      href: irt.html
+output:
+  html_document:
+    theme: cosmo
+    highlight: textmate

@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Classical Test Theory (CTT)</title>
+
+<script src="site_libs/header-attrs-2.7/header-attrs.js"></script>
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+.tocify-subheader {
+  display: inline;
+}
+.tocify-subheader .tocify-item {
+  font-size: 0.95em;
+}
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-sm-12 col-md-4 col-lg-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-sm-12 col-md-8 col-lg-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Equating Using R</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fas fa-home"></span>
+     
+    Home
+  </a>
+</li>
+<li>
+  <a href="ctt.html">
+    <span class="fas fa-battery-half"></span>
+     
+    CTT
+  </a>
+</li>
+<li>
+  <a href="irt.html">
+    <span class="fas fa-battery-full"></span>
+     
+    IRT
+  </a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Classical Test Theory (CTT)</h1>
+
+</div>
+
+
+<div id="equivalent-groups" class="section level1">
+<h1>Equivalent Groups</h1>
+<p>In an equivalent group design, a random sample of examinees takes form X and a second random sample takes form Y. Because these are random samples from the same population, any differences in the distribution of scores are again assumed to be a function of test difficulty because the randomization should ensure that the two groups are equivalent in the ability being assessed.</p>
+<div id="example-setup" class="section level2">
+<h2>Example Setup</h2>
+<p>First, install and activate the <strong>equate</strong> package.</p>
+<pre class="r"><code>install.packages(&quot;equate&quot;)
+library(&quot;equate&quot;)</code></pre>
+<p>Next, we will import the test forms (X and Y) into R. Each form has 1000 students taking either form X or form Y. Scores in both forms range from 20 to 50 points. In this example, assume that X is the new test form and Y is the reference test form. We want to place scores from form X into the scale of form Y.</p>
+<pre class="r"><code># Test form X
+formx &lt;- read.csv(&quot;formx.csv&quot;, header = TRUE)
+formy &lt;- read.csv(&quot;formy.csv&quot;, header = TRUE)
+
+# Preview the data sets
+head(formx)</code></pre>
+<pre><code>##   score form
+## 1    35    x
+## 2    34    x
+## 3    32    x
+## 4    35    x
+## 5    26    x
+## 6    47    x</code></pre>
+<pre class="r"><code>head(formy)</code></pre>
+<pre><code>##   score form
+## 1    43    y
+## 2    34    y
+## 3    31    y
+## 4    38    y
+## 5    37    y
+## 6    42    y</code></pre>
+<pre class="r"><code># Combine the forms
+formxy &lt;- rbind(formx, formy)</code></pre>
+<p>The <strong>equate</strong> package analyzes score distributions as frequency tables. These frequency tables are created using the <code>as.freqtab</code> function in <strong>equate</strong>. So, our data must be restructured as a frequency table in order to work with the functions in <strong>equate</strong>.</p>
+<pre class="r"><code># Add score frequencies to the data
+data &lt;- as.data.frame(table(formxy$score, formxy$form))
+names(data) &lt;- c(&quot;total&quot;, &quot;form&quot;, &quot;count&quot;)
+head(data)</code></pre>
+<pre><code>##   total form count
+## 1    23    x     2
+## 2    24    x     6
+## 3    25    x     5
+## 4    26    x    14
+## 5    27    x     7
+## 6    28    x    20</code></pre>
+<pre class="r"><code># Restructure the data as a frequency table
+data_x &lt;- as.freqtab(data[data$form == &quot;x&quot;, c(&quot;total&quot;, &quot;count&quot;)], scales = 20:50)
+data_y &lt;- as.freqtab(data[data$form == &quot;y&quot;, c(&quot;total&quot;, &quot;count&quot;)], scales = 20:50)
+
+head(data_x)</code></pre>
+<pre><code>##   total count
+## 1    20     0
+## 2    21     0
+## 3    22     0
+## 4    23     2
+## 5    24     6
+## 6    25     5</code></pre>
+<pre class="r"><code>head(data_y)</code></pre>
+<pre><code>##   total count
+## 1    20     0
+## 2    21     0
+## 3    22     0
+## 4    23     0
+## 5    24     0
+## 6    25     0</code></pre>
+<p>Now let’s see a descriptive summary of the forms.</p>
+<pre class="r"><code># Descriptive summary of the forms
+rbind(form_x = summary(data_x), form_y = summary(data_y))</code></pre>
+<pre><code>##         mean    sd    skew  kurt min max    n
+## form_x 34.92 4.098 0.04374 3.169  23  48 1000
+## form_y 38.84 3.816 0.05785 2.870  28  50 1000</code></pre>
+<p>We can also visualize the test score distributions.</p>
+<pre class="r"><code>plot(data_x, main = &quot;Bar plot of the test scores on form X&quot;)</code></pre>
+<p><img src="ctt_files/figure-html/ch5-1.png" width="672" /></p>
+<pre class="r"><code>plot(data_y, main = &quot;Bar plot of the test scores on form Y&quot;)</code></pre>
+<p><img src="ctt_files/figure-html/ch6-1.png" width="672" /></p>
+</div>
+<div id="linear-equating-methods" class="section level2">
+<h2>Linear Equating Methods</h2>
+<p>The linear equating methods include identity (i.e., no equating), mean, linear, and general linear functions.</p>
+<div id="mean-equating" class="section level3">
+<h3>Mean Equating</h3>
+<p>This method adjusts the scores from the new form (X) using the mean difference between the two forms (X and Y) as a fixed constant.</p>
+<pre class="r"><code>mean_yx &lt;- equate(data_x, data_y, type = &quot;mean&quot;)
+mean_yx</code></pre>
+<pre><code>## 
+## Mean Equating: data_x to data_y 
+## 
+## Design: equivalent groups 
+## 
+## Summary Statistics:
+##     mean   sd skew kurt   min   max    n
+## x  34.92 4.10 0.04 3.17 23.00 48.00 1000
+## y  38.84 3.82 0.06 2.87 28.00 50.00 1000
+## yx 38.84 4.10 0.04 3.17 26.91 51.92 1000
+## 
+## Coefficients:
+## intercept     slope        cx        cy        sx        sy 
+##     3.915     1.000    35.000    35.000    30.000    30.000</code></pre>
+<p>We can also check out the concordance table to see how X scores changed after being equated to form Y. The concordance table indicates that an examinee who got a 20 on form X would be expected to get a 23.92 on form Y. That is, it is a simple transformation of form X + 3.915.</p>
+<pre class="r"><code>head(mean_yx$concordance)</code></pre>
+<pre><code>##   scale    yx
+## 1    20 23.92
+## 2    21 24.92
+## 3    22 25.92
+## 4    23 26.92
+## 5    24 27.92
+## 6    25 28.92</code></pre>
+<p>We can merge the concordance table back to form X so that we can see both old and new scores together for each examinee.</p>
+<pre class="r"><code># Save the concordance table
+form_yx &lt;- mean_yx$concordance
+
+# Rename the first column to total
+colnames(form_yx)[1] &lt;- &quot;total&quot;
+
+# Merge the concordance table to form x
+data_xy &lt;- merge(data_x, form_yx)
+head(data_xy)</code></pre>
+<pre><code>##   total count    yx
+## 1    20     0 23.92
+## 2    21     0 24.92
+## 3    22     0 25.92
+## 4    23     2 26.92
+## 5    24     6 27.92
+## 6    25     5 28.92</code></pre>
+</div>
+<div id="linear-equating" class="section level3">
+<h3>Linear Equating</h3>
+<p>This method adjusts the scores from the new form (X) using both the mean and standard deviation differences between the two forms (X and Y) using a linear equation.</p>
+<pre class="r"><code>linear_yx &lt;- equate(data_x, data_y, type = &quot;linear&quot;)
+linear_yx</code></pre>
+<pre><code>## 
+## Linear Equating: data_x to data_y 
+## 
+## Design: equivalent groups 
+## 
+## Summary Statistics:
+##     mean   sd skew kurt   min   max    n
+## x  34.92 4.10 0.04 3.17 23.00 48.00 1000
+## y  38.84 3.82 0.06 2.87 28.00 50.00 1000
+## yx 38.84 3.82 0.04 3.17 27.74 51.01 1000
+## 
+## Coefficients:
+## intercept     slope        cx        cy        sx        sy 
+##    6.3199    0.9311   35.0000   35.0000   30.0000   30.0000</code></pre>
+</div>
+</div>
+<div id="non-linear-equating" class="section level2">
+<h2>Non-Linear Equating</h2>
+<p>The nonlinear equating methods include equipercentile, circle-arc, and composite functions.</p>
+<div id="equipercentile-equating" class="section level3">
+<h3>Equipercentile Equating</h3>
+<p>Equipercentile equating works by breaking up the scores on the X and Y forms into percentiles. Then percentiles of form X are matched to the percentiles on form Y.</p>
+<pre class="r"><code>equi_yx &lt;- equate(data_x, data_y, type = &quot;equipercentile&quot;)</code></pre>
+<p>Now, let’s see how the X scores have been adjusted based on the percentile ranks of forms X and Y. The following figure shows that the biggest discrepancies between these two functions are at the tails of the distribution.</p>
+<pre class="r"><code>plot(equi_yx$concordance$yx ~ equi_yx$concordance$scale, type = &quot;p&quot;, xlab = &quot;Form X scores&quot;, 
+     ylab = &quot;Adjusted X Scores on Form Y&quot;, ylim = c(20, 55))
+points(linear_yx$concordance$yx ~ linear_yx$concordance$scale, pch = 4)</code></pre>
+<p><img src="ctt_files/figure-html/ch12-1.png" width="672" /></p>
+</div>
+</div>
+</div>
+<div id="nonequivalent-groups" class="section level1">
+<h1>Nonequivalent Groups</h1>
+<p>In a nonequivalent group design, the population of examinees taking the different forms cannot be assumed to be from the same population. Therefore, potential differences in their abilities on the construct(s) must be accounted for. When a nonequivalent group design is used, a particular equating method must be specified. Generally, these methods work by relating the total scores on form X and form Y through the scores on a common set of items appearing on both forms (i.e., the common anchor scores) and the creation of a weighted, synthetic population (see <a href="https://www.researchgate.net/publication/309364327_equate_An_R_Package_for_Observed-Score_Linking_and_Equating">Albano (2016)</a> for more information on these methods). The equating methods available in the <strong>equate</strong> package are:</p>
+<ul>
+<li>Tucker</li>
+<li>Nominal</li>
+<li>Levine true score</li>
+<li>Braun/Holland</li>
+<li>Frequency</li>
+<li>Chained</li>
+</ul>
+<div id="example-setup-1" class="section level2">
+<h2>Example Setup</h2>
+<p>The negd data set contains data on 2,000 examinees responding to 35 questions on a particular form of the test (either form X or form Y). Questions 1 through 25, labeled q.1, …, q.25, are unique to each form, while questions 26 through 35, labeled a.1, …, a.10, are the common anchor items.</p>
+<pre class="r"><code>negd &lt;- read.csv(&quot;negd.csv&quot;, header = TRUE)
+head(negd)</code></pre>
+<pre><code>##   q.1 q.2 q.3 q.4 q.5 q.6 q.7 q.8 q.9 q.10 q.11 q.12 q.13 q.14 q.15 q.16 q.17 q.18 q.19
+## 1   1   0   0   0   1   0   1   0   0    0    1    0    0    1    1    1    1    0    0
+## 2   0   0   1   1   1   0   0   0   1    0    1    1    1    0    0    0    0    0    1
+## 3   1   0   1   1   1   1   1   1   1    0    0    1    1    1    0    0    0    0    0
+## 4   0   1   1   0   0   0   0   1   0    0    0    0    1    1    0    1    0    0    0
+## 5   0   0   1   0   0   1   0   1   0    1    0    0    1    0    0    0    1    0    0
+## 6   0   0   1   1   1   0   1   0   0    0    1    1    1    1    0    1    1    1    1
+##   q.20 q.21 q.22 q.23 q.24 q.25 a.1 a.2 a.3 a.4 a.5 a.6 a.7 a.8 a.9 a.10 form
+## 1    0    1    1    0    1    0   0   0   0   0   0   0   0   1   0    0    x
+## 2    0    0    1    0    1    1   1   1   0   0   1   0   1   0   1    0    x
+## 3    0    1    1    0    0    0   0   1   1   1   1   0   1   0   0    1    x
+## 4    1    1    1    0    1    0   0   1   1   1   0   1   1   1   1    0    x
+## 5    1    0    1    0    1    1   0   0   1   1   0   1   0   0   0    1    x
+## 6    0    1    1    1    0    1   0   1   1   1   1   1   1   0   1    1    x</code></pre>
+<p>Because the data are in a person-by-item format, for each person, we need to calculate their total score on the form, excluding the common anchor items, then their score on the common anchor items. Once this is done, frequency tables can be created, plotted, and then passed onto the <strong>equate</strong> function.</p>
+<pre class="r"><code># Calculate total scores based on unique items
+negd$total &lt;- rowSums(negd[, 1:25])
+
+# Calculate scores based on anchor items
+negd$anchor &lt;- rowSums(negd[, 26:35])
+
+# Create frequency tables (total score range: 0-25; anchor score range: 0-10)
+negd_x &lt;- freqtab(negd[1:1000, c(&quot;total&quot;, &quot;anchor&quot;)], scales = list(0:25, 0:10))
+negd_y &lt;- freqtab(negd[1001:2000, c(&quot;total&quot;, &quot;anchor&quot;)], scales = list(0:25, 0:10))</code></pre>
+<p>Now we will see a scatterplot of the common anchor scores on form X against the total scores on form X. Plotted along the axes are the marginal distributions of these scores.</p>
+<pre class="r"><code>plot(negd_x, xlab = &quot;Total Scores Form X&quot;, ylab = &quot;Common Anchor Scores Form X&quot;)</code></pre>
+<p><img src="ctt_files/figure-html/ch15-1.png" width="672" /></p>
+<p>The two distributions are roughly normal, with some irregularities for the total scores for form X (note the presence of various peaks near the center of this distribution). Because there are irregularities, assumed to arise from measurement error, presmoothing could be performed. There are a variety of presmoothing options available in equate. One option involves fitting a log linear model. Log linear presmoothing can be specified for forms X and Y as follows:</p>
+<pre class="r"><code>smooth_x &lt;- presmoothing(negd_x, smoothmethod = &quot;loglinear&quot;)
+smooth_y &lt;- presmoothing(negd_y, smoothmethod = &quot;loglinear&quot;)</code></pre>
+<p>Now, let’s check out the plot again.</p>
+<pre class="r"><code>plot(smooth_x, xlab = &quot;Total Scores Form X&quot;, ylab = &quot;Common Anchor Scores Form X&quot;)</code></pre>
+<p><img src="ctt_files/figure-html/ch17-1.png" width="672" /></p>
+</div>
+<div id="linear-tucker-equating" class="section level2">
+<h2>Linear Tucker Equating</h2>
+<p>xxx</p>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
