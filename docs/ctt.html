@@ -334,14 +334,14 @@ div.tocify {
 </li>
 <li>
   <a href="ctt.html">
-    <span class="fas fa-battery-half"></span>
+    <span class="fas fa-circle"></span>
      
     CTT
   </a>
 </li>
 <li>
   <a href="irt.html">
-    <span class="fas fa-battery-full"></span>
+    <span class="fas fa-square"></span>
      
     IRT
   </a>
@@ -521,6 +521,12 @@ linear_yx</code></pre>
      ylab = &quot;Adjusted X Scores on Form Y&quot;, ylim = c(20, 55))
 points(linear_yx$concordance$yx ~ linear_yx$concordance$scale, pch = 4)</code></pre>
 <p><img src="ctt_files/figure-html/ch12-1.png" width="672" /></p>
+<p>We can also add loglinear smoothing into the process and compare it against the regular equipercentile. The smooth line indicates the equipercentile with loglinear smoothing whereas the straight line (with a breaking point) indicates the regular equipercentile.</p>
+<pre class="r"><code>equismooth_yx &lt;- equate(data_x, data_y, type = &quot;equipercentile&quot;, smooth = &quot;loglin&quot;, degree = 3)
+
+# Compare equating functions
+plot(equi_yx, equismooth_yx, addident = FALSE)</code></pre>
+<p><img src="ctt_files/figure-html/ch11a-1.png" width="672" /></p>
 </div>
 </div>
 </div>
@@ -576,7 +582,84 @@ smooth_y &lt;- presmoothing(negd_y, smoothmethod = &quot;loglinear&quot;)</code>
 </div>
 <div id="linear-tucker-equating" class="section level2">
 <h2>Linear Tucker Equating</h2>
-<p>xxx</p>
+<p>Now we will use linear equating based on the Tucker method.</p>
+<pre class="r"><code>negd_tucker &lt;- equate(negd_x, negd_y, type = &quot;linear&quot;, method = &quot;tucker&quot;)
+negd_tucker$concordance</code></pre>
+<pre><code>##    scale     yx   se.n   se.g
+## 1      0  4.439 0.3481 0.3400
+## 2      1  5.221 0.3261 0.3197
+## 3      2  6.002 0.3045 0.2997
+## 4      3  6.784 0.2832 0.2800
+## 5      4  7.565 0.2625 0.2608
+## 6      5  8.347 0.2423 0.2421
+## 7      6  9.128 0.2230 0.2241
+## 8      7  9.910 0.2047 0.2070
+## 9      8 10.691 0.1877 0.1909
+## 10     9 11.473 0.1724 0.1763
+## 11    10 12.254 0.1593 0.1634
+## 12    11 13.035 0.1490 0.1527
+## 13    12 13.817 0.1421 0.1447
+## 14    13 14.598 0.1391 0.1399
+## 15    14 15.380 0.1402 0.1386
+## 16    15 16.161 0.1454 0.1408
+## 17    16 16.943 0.1542 0.1465
+## 18    17 17.724 0.1660 0.1553
+## 19    18 18.506 0.1804 0.1666
+## 20    19 19.287 0.1966 0.1800
+## 21    20 20.069 0.2144 0.1951
+## 22    21 20.850 0.2333 0.2114
+## 23    22 21.632 0.2530 0.2288
+## 24    23 22.413 0.2735 0.2470
+## 25    24 23.195 0.2945 0.2658
+## 26    25 23.976 0.3160 0.2852</code></pre>
+</div>
+<div id="comparing-multiple-methods" class="section level2">
+<h2>Comparing Multiple Methods</h2>
+<pre class="r"><code># Nominal method with mean equating
+negd_nom &lt;- equate(negd_x, negd_y, type = &quot;mean&quot;, method = &quot;nom&quot;)
+
+# Frequency method with equipercentile
+negd_freq &lt;- equate(negd_x, negd_y, type = &quot;equip&quot;, method = &quot;freq&quot;)
+
+# Braun method with linear equating
+negd_braun &lt;- equate(negd_x, negd_y, type = &quot;linear&quot;, method = &quot;braun&quot;)
+
+# Compare equated scores
+round(cbind(xscale = 0:25, 
+            nominal = negd_nom$concordance$yx,
+            tucker = negd_tucker$concordance$yx, 
+            freq = negd_freq$concordance$yx, 
+            braun = negd_braun$concordance$yx), 2)</code></pre>
+<pre><code>##       xscale nominal tucker  freq braun
+##  [1,]      0    0.25   4.44 -0.50  4.41
+##  [2,]      1    1.25   5.22  3.76  5.20
+##  [3,]      2    2.25   6.00  4.69  5.98
+##  [4,]      3    3.25   6.78  6.56  6.77
+##  [5,]      4    4.25   7.57  7.29  7.55
+##  [6,]      5    5.25   8.35  8.51  8.34
+##  [7,]      6    6.25   9.13  9.35  9.12
+##  [8,]      7    7.25   9.91  9.98  9.91
+##  [9,]      8    8.25  10.69 10.72 10.70
+## [10,]      9    9.25  11.47 11.49 11.48
+## [11,]     10   10.25  12.25 12.18 12.27
+## [12,]     11   11.25  13.04 13.03 13.05
+## [13,]     12   12.25  13.82 13.94 13.84
+## [14,]     13   13.25  14.60 14.84 14.62
+## [15,]     14   14.25  15.38 15.57 15.41
+## [16,]     15   15.25  16.16 16.31 16.19
+## [17,]     16   16.25  16.94 16.98 16.98
+## [18,]     17   17.25  17.72 17.47 17.77
+## [19,]     18   18.25  18.51 18.24 18.55
+## [20,]     19   19.25  19.29 19.12 19.34
+## [21,]     20   20.25  20.07 20.05 20.12
+## [22,]     21   21.25  20.85 21.03 20.91
+## [23,]     22   22.25  21.63 22.09 21.69
+## [24,]     23   23.25  22.41 23.00 22.48
+## [25,]     24   24.25  23.19 23.39 23.26
+## [26,]     25   25.25  23.98 24.16 24.05</code></pre>
+<pre class="r"><code># Plot the results
+plot(negd_tucker, negd_nom, negd_freq, negd_braun, lty = rep(1:2, each = 2))</code></pre>
+<p><img src="ctt_files/figure-html/ch19-1.png" width="672" /></p>
 </div>
 </div>
 

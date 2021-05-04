@@ -1,5 +1,24 @@
 ---
-title: "My Website"
+title: "Test Equating Applications Using R"
+output: html_document
 ---
 
-Hello, Website!
+# A List of R Packages for Equating/Linking
+
+* [equate](https://cran.r-project.org/web/packages/equate/index.html) (CTT)
+* [equateIRT](https://cran.r-project.org/web/packages/equateIRT/index.html) (IRT)
+* [equateMultiple](https://cran.r-project.org/web/packages/equateMultiple/index.html) (IRT)
+
+**Note:** CTT: Classical Test Theory; IRT: Item Response Theory.
+
+# Additional Resources
+
+* Anthony Albano's [vignette](https://cran.r-project.org/web/packages/equate/vignettes/equate-jss.pdf) for the **equate** package
+
+* Michela Battauz's [article](https://www.jstatsoft.org/article/view/v068i07/v68i07.pdf) on the **equateIRT** package
+
+* Jorge González and Marie Wiberg's [Applying Test Equating Methods](https://www.springer.com/gp/book/9783319518220)
+
+* Christopher Desjardins and Okan Bulut's [Handbook of Educational Measurement and Psychometrics Using R](https://www.routledge.com/Handbook-of-Educational-Measurement-and-Psychometrics-Using/Desjardins-Bulut/p/book/9780367734671)
+
+

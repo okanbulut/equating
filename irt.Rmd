@@ -1,5 +1,18 @@
 ---
-title: "About This Website"
+title: "Item Response Theory (IRT)"
+output:
+  html_document:
+    toc: true
+    toc_float:
+      collapsed: false
+      number_sections: false
+    toc_depth: 3
 ---
 
-More about this website.
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(message=FALSE, warning=FALSE)
+library("equate")
+```
+
+# Title
+

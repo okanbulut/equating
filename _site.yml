@@ -7,10 +7,10 @@ navbar:
       icon: fa-home
       href: index.html
     - text: "CTT"
-      icon: fa-battery-half
+      icon: fa-circle
       href: ctt.html
     - text: "IRT"
-      icon: fa-battery-full
+      icon: fa-square
       href: irt.html
 output:
   html_document:

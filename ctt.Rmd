@@ -139,6 +139,15 @@ plot(equi_yx$concordance$yx ~ equi_yx$concordance$scale, type = "p", xlab = "For
 points(linear_yx$concordance$yx ~ linear_yx$concordance$scale, pch = 4)
 ```
 
+We can also add loglinear smoothing into the process and compare it against the regular equipercentile. The smooth line indicates the equipercentile with loglinear smoothing whereas the straight line (with a breaking point) indicates the regular equipercentile.
+
+```{r ch11a}
+equismooth_yx <- equate(data_x, data_y, type = "equipercentile", smooth = "loglin", degree = 3)
+
+# Compare equating functions
+plot(equi_yx, equismooth_yx, addident = FALSE)
+```
+
 # Nonequivalent Groups
 
 In a nonequivalent group design, the population of examinees taking the different forms cannot be assumed to be from the same population. Therefore, potential differences in their abilities on the construct(s) must be accounted for. When a nonequivalent group design is used, a particular equating method must be specified. Generally, these methods work by relating the total scores on form X and form Y through the scores on a common set of items appearing on both forms (i.e., the common anchor scores) and the creation of a weighted, synthetic population (see [Albano (2016)](https://www.researchgate.net/publication/309364327_equate_An_R_Package_for_Observed-Score_Linking_and_Equating) for more information on these methods). The equating methods available in the **equate** package are:
@@ -194,5 +203,35 @@ plot(smooth_x, xlab = "Total Scores Form X", ylab = "Common Anchor Scores Form X
 
 ## Linear Tucker Equating
 
-xxx
+Now we will use linear equating based on the Tucker method. 
+
+```{r ch18}
+negd_tucker <- equate(negd_x, negd_y, type = "linear", method = "tucker")
+negd_tucker$concordance
+```
+
+## Comparing Multiple Methods
+
+```{r ch19}
+# Nominal method with mean equating
+negd_nom <- equate(negd_x, negd_y, type = "mean", method = "nom")
+
+# Frequency method with equipercentile
+negd_freq <- equate(negd_x, negd_y, type = "equip", method = "freq")
+
+# Braun method with linear equating
+negd_braun <- equate(negd_x, negd_y, type = "linear", method = "braun")
+
+# Compare equated scores
+round(cbind(xscale = 0:25, 
+            nominal = negd_nom$concordance$yx,
+            tucker = negd_tucker$concordance$yx, 
+            freq = negd_freq$concordance$yx, 
+            braun = negd_braun$concordance$yx), 2)
+
+# Plot the results
+plot(negd_tucker, negd_nom, negd_freq, negd_braun, lty = rep(1:2, each = 2))
+```
+
+
 
