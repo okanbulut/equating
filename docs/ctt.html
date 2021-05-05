@@ -549,27 +549,20 @@ plot(equi_yx, equismooth_yx, addident = FALSE)</code></pre>
 <p>The negd data set contains data on 2,000 examinees responding to 35 questions on a particular form of the test (either form X or form Y). Questions 1 through 25, labeled q.1, …, q.25, are unique to each form, while questions 26 through 35, labeled a.1, …, a.10, are the common anchor items.</p>
 <pre class="r"><code>negd &lt;- read.csv(&quot;negd.csv&quot;, header = TRUE)
 head(negd)</code></pre>
-<pre><code>##   q.1 q.2 q.3 q.4 q.5 q.6 q.7 q.8 q.9 q.10 q.11 q.12 q.13 q.14 q.15 q.16 q.17
-## 1   1   0   0   0   1   0   1   0   0    0    1    0    0    1    1    1    1
-## 2   0   0   1   1   1   0   0   0   1    0    1    1    1    0    0    0    0
-## 3   1   0   1   1   1   1   1   1   1    0    0    1    1    1    0    0    0
-## 4   0   1   1   0   0   0   0   1   0    0    0    0    1    1    0    1    0
-## 5   0   0   1   0   0   1   0   1   0    1    0    0    1    0    0    0    1
-## 6   0   0   1   1   1   0   1   0   0    0    1    1    1    1    0    1    1
-##   q.18 q.19 q.20 q.21 q.22 q.23 q.24 q.25 a.1 a.2 a.3 a.4 a.5 a.6 a.7 a.8 a.9
-## 1    0    0    0    1    1    0    1    0   0   0   0   0   0   0   0   1   0
-## 2    0    1    0    0    1    0    1    1   1   1   0   0   1   0   1   0   1
-## 3    0    0    0    1    1    0    0    0   0   1   1   1   1   0   1   0   0
-## 4    0    0    1    1    1    0    1    0   0   1   1   1   0   1   1   1   1
-## 5    0    0    1    0    1    0    1    1   0   0   1   1   0   1   0   0   0
-## 6    1    1    0    1    1    1    0    1   0   1   1   1   1   1   1   0   1
-##   a.10 form
-## 1    0    x
-## 2    0    x
-## 3    1    x
-## 4    0    x
-## 5    1    x
-## 6    1    x</code></pre>
+<pre><code>##   q.1 q.2 q.3 q.4 q.5 q.6 q.7 q.8 q.9 q.10 q.11 q.12 q.13 q.14 q.15 q.16 q.17 q.18 q.19 q.20 q.21
+## 1   1   0   0   0   1   0   1   0   0    0    1    0    0    1    1    1    1    0    0    0    1
+## 2   0   0   1   1   1   0   0   0   1    0    1    1    1    0    0    0    0    0    1    0    0
+## 3   1   0   1   1   1   1   1   1   1    0    0    1    1    1    0    0    0    0    0    0    1
+## 4   0   1   1   0   0   0   0   1   0    0    0    0    1    1    0    1    0    0    0    1    1
+## 5   0   0   1   0   0   1   0   1   0    1    0    0    1    0    0    0    1    0    0    1    0
+## 6   0   0   1   1   1   0   1   0   0    0    1    1    1    1    0    1    1    1    1    0    1
+##   q.22 q.23 q.24 q.25 a.1 a.2 a.3 a.4 a.5 a.6 a.7 a.8 a.9 a.10 form
+## 1    1    0    1    0   0   0   0   0   0   0   0   1   0    0    x
+## 2    1    0    1    1   1   1   0   0   1   0   1   0   1    0    x
+## 3    1    0    0    0   0   1   1   1   1   0   1   0   0    1    x
+## 4    1    0    1    0   0   1   1   1   0   1   1   1   1    0    x
+## 5    1    0    1    1   0   0   1   1   0   1   0   0   0    1    x
+## 6    1    1    0    1   0   1   1   1   1   1   1   0   1    1    x</code></pre>
 <p>Because the data are in a person-by-item format, for each person, we need to calculate their total score on the form, excluding the common anchor items, then their score on the common anchor items. Once this is done, frequency tables can be created, plotted, and then passed onto the <strong>equate</strong> function.</p>
 <pre class="r"><code># Calculate total scores based on unique items
 negd$total &lt;- rowSums(negd[, 1:25])

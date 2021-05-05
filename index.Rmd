@@ -10,7 +10,7 @@ output: html_document
 <br>
 <br>
 
-**Test equating** refers to statistical procedures to establish comparable scores on different forms of a test, allowing test scores from each form to be used interchangeably. It allows test administrators to establish validity of test results across different forms and years. This online resource aims to present practical applications of test equating in R by drawing upon information from a variety of resources about test equating, linking, and scaling. Well-known test equating methods in Classical Test Theory (CTT) and Item Response Theory (IRT) are demonstrated using various examples in R. A zipped folder including the R codes and datasets used in the examples can be downloaded **[here](www.example.com)**. 
+**Test equating** refers to statistical procedures to establish comparable scores on different forms of a test, allowing test scores from each form to be used interchangeably. It allows test administrators to establish validity of test results across different forms and years. This online resource aims to present practical applications of test equating in R by drawing upon information from a variety of resources about test equating, linking, and scaling. Well-known test equating methods in Classical Test Theory (CTT) and Item Response Theory (IRT) are demonstrated using various examples in R. A zipped folder including the R codes and datasets used in the examples can be downloaded **[here](https://github.com/okanbulut/equating/raw/main/codes_data/codes_data.zip)**. 
 <br>
 <br>
 
