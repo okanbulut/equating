@@ -1,5 +1,5 @@
 ---
-title: "Classical Test Theory (CTT)"
+title: "Test Equating Based on Classical Test Theory (CTT)"
 output:
   html_document:
     toc: true
@@ -13,16 +13,15 @@ output:
 knitr::opts_chunk$set(message=FALSE, warning=FALSE)
 library("equate")
 ```
+<br>
 
-
-# Equivalent Groups
+# Equivalent (Random) Groups
 
 In an equivalent group design, a random sample of examinees takes form X and a second random sample takes form Y. Because these are random samples from the same population, any differences in the distribution of scores are again assumed to be a function of test difficulty because the randomization should ensure that the two groups are equivalent in the ability being assessed.
 
 ## Example Setup
 
-First, install and activate the **equate** package. 
-
+First, we will install and activate the **equate** package. 
 
 ```{r ch1, eval=FALSE}
 install.packages("equate")
@@ -159,6 +158,10 @@ In a nonequivalent group design, the population of examinees taking the differen
 * Frequency
 * Chained
 
+The following table shows the combinations of these methods with the other equating types that we have seen so far:
+
+![](images/neat.png)
+
 ## Example Setup
 
 The negd data set contains data on 2,000 examinees responding to 35 questions on a particular form of the test (either form X or form Y). Questions 1 through 25, labeled q.1, ..., q.25, are unique to each form, while questions 26 through 35, labeled a.1, ..., a.10, are the common anchor items.
@@ -230,7 +233,8 @@ round(cbind(xscale = 0:25,
             braun = negd_braun$concordance$yx), 2)
 
 # Plot the results
-plot(negd_tucker, negd_nom, negd_freq, negd_braun, lty = rep(1:2, each = 2))
+plot(negd_tucker, negd_nom, negd_freq, negd_braun, lty=c(1,2,3,4),
+     col=c("blue", "black", "red", "forestgreen"), addident = FALSE)
 ```
 
 

@@ -1,5 +1,5 @@
 ---
-title: "Item Response Theory (IRT)"
+title: "Test Equating Based on Item Response Theory (IRT)"
 output:
   html_document:
     toc: true
@@ -11,8 +11,211 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(message=FALSE, warning=FALSE)
-library("equate")
+library("SNSequate")
+library("equateIRT")
+library("mirt")
+```
+<br>
+
+Test equating with IRT methods falls into two broad categories: 
+
+* Equating through common items
+* Equating through common people
+
+Either common items or common people serve as a bridge between two test forms. 
+<br>
+<br>
+
+# Common Item Equating
+
+Common item equating is done by using common items embedded in two different test forms. The most typical applications of common item equating include:
+
+* equating by applying equating constants
+* equating through test characteristics curves
+* equating by concurrent (or simultaneous) calibration
+
+## Equating with Equating Constants
+
+Because the parameters from different test forms need to be on the same scale, IRT parameter linking is conducted to place the IRT parameter estimates from separate calibrations of two test forms onto a common scale. To transform the theta ($\theta$) scores linearly from one form to another, two equating constants (A and B) are necessary:
+
+$$\theta_{Y} = A\theta_X + B$$
+The relations between item parameters on the two test forms are as follows:
+
+$$a_Y = a_X / A$$
+
+$$b_Y = Ab_X + B$$
+
+$$c_Y = c_X$$
+
+where A and B are equating constants that need to be estimated. 
+
+There are two types of methods to calculate A and B constants. The mean-mean method uses the following method to compute the A constant:
+
+$$A = \frac{\mu_{a_X}}{\mu_{a_Y}}$$
+
+while the mean-sigma method uses the following method:
+
+$$A = \frac{\sigma_{a_X}}{\sigma_{a_Y}}$$
+
+where $\mu_{a_X}$ and $\mu_{a_Y}$ are mean of the item discrimination parameter estimates taken only on the set of common items for forms X and Y; $\sigma_{a_X}$ and $\sigma_{a_Y}$ are the standard deviations of the item discrimination parameter estimates taken only on the set of common items for forms X and Y. 
+
+For both the mean-mean and mean-sigma methods, the B constant can be computed as:
+
+$$B = \mu_{b_Y} - \mu_{b_X}$$
+
+where $\mu_{b_Y}$ and $\mu_{b_X}$ are the mean of the item difficulty parameter estimates taken only on the set of common items for forms X and Y. 
+
+
+## Equating through TTC
+
+Two additional methods to obtain the equating coefficients were proposed by Haebara (1980) and Stocking and Lord (1983). Both methods work through IRT Test Characteristics Curves (TCCs) to find the A and B constants. A TCC shows the relationship between the IRT ability parameter (i.e., $\theta$) and the expected raw score on a test. These methods look for optimal weightings that can be applied to the item parameters for the common items on Form X so that they become very similar to those from form Y. After the equating is performed, the TCCs of the common items should be as similar as possible between forms X and Y. 
+
+## Equating by Concurrent Calibration
+
+Equating by concurrent calibration involves identifying the common items on a test form or item bank and using them as the origin for equating without adding (or subtracting) any equating constant. Instead, when using the concurrent calibration approach, the IRT item characteristics for the common items on two separate forms are expected to remain fixed and link the parameters of the unique items. In other words, the common items are assumed to set the scale for different forms and thereby placing the item parameter estimates onto the same scale.  
+
+# Common Person Equating
+
+Common person equating might be considered the inverse of common item equating. Instead of using previously tested items with previously fixed parameters, previously tested people with previously fixed abilities are used to adjust the item parameters. In other words, to perform common person equating, the IRT ability of students is estimated based on the reference test form. Then, these ability estimates are then fixed and held constant when students take a different form. In the item calibration process, known ability estimates are used to estimate item parameters for the new form. This procedure is expected to place the item parameters from the new form onto the scale of the reference form. 
+
+# Example
+
+In this example, we will use data from two forms (X and Y) of a 36-item test from the **SNSequate** package and apply IRT-based equating methods. The data set contains both response patterns and item parameters estimates following a 3PL model for two 36-items tests forms. Form X was administered to 1655 examinees and form Y to 1638 examinees. Also, 12 out of the 36 items are common between both test forms (items 3, 6, 9, 12, 15, 18, 21, 24, 27, 30, 33, 36). 
+
+First, we will install and activate the **SNSequate** package. 
+
+
+```{r ch21, eval=FALSE}
+install.packages("SNSequate")
+library("SNSequate")
 ```
 
-# Title
+Then, we will activate the KB36 data set and check its content.
+
+```{r ch22}
+data("KB36")
+str(KB36)
+```
+
+Now we will save the item parameters in separate files and prepare them for equating analysis.
+
+```{r ch23}
+# Parameters of Form X
+parm.x <- KB36$KBformX_par
+
+# Parameters of Form Y
+parm.y <- KB36$KBformY_par
+
+# Combine the parameters from both forms
+parm.xy <- as.data.frame(cbind(parm.y, parm.x))
+
+# Parameters for common items
+common.items <- c(3, 6, 9, 12, 15, 18, 21, 24, 27, 30, 33, 36)
+
+# Equate the two forms
+irt.link(parm.xy, common.items, model = "3PL", icc = "logistic", D = 1.7)
+```
+
+We can also replicate the same analysis using the **equateIRT** package. So, let's install and activate the package.
+
+```{r ch24, eval=FALSE}
+install.packages("equateIRT")
+library("equateIRT")
+```
+
+The **equateIRT** package has two functions to perform equating:
+
+`modIRT(coef, var = NULL,...)`
+
+`direc(mod1, mod2, method = "mean-mean",...)`
+
+First, we need to save the item parameters as a `modIRT` object and then use the object in the `direc` function to estimate the equating constants. The row names in the matrix provided in the argument `coef` must be the names given to the items because this is the information that is used to differentiate between common and unique items in the equating process. This means that we need to use different names on the unique items and the same names on the common items. The following code shows a possible way to correctly assign names to the items.
+
+```{r ch25}
+# Parameters of form X - guessing, difficulty, discrimination
+kbx <- cbind(KB36$KBformX_par[,3], KB36$KBformX_par[,2], KB36$KBformX_par[,1])
+
+# Parameters of form Y - guessing, difficulty, discrimination
+kby <- cbind(KB36$KBformY_par[,3],KB36$KBformY_par[,2], KB36$KBformY_par[,1])
+
+# Rename the items differently: I1 to I36 in Form X; I37 to I60 in Form Y
+row.names(kbx) <- paste0("I", 1:36)
+row.names(kby) <- paste0("I", c(37,38, 3,39,40, 6,41,42, 9,43,44, 12,45,46, 15,47,48, 18,49,50, 21,51,52,24,53,54, 27,55,56, 30,57,58, 33,59,60, 36))
+
+# Combine the parameters in a list
+datakb <- list(kbx, kby)
+datakb
+```
+
+Now, the common items have the same name whereas the remaining items in Forms X and Y have different names. We can use this list to estimate the equating constants.
+
+```{r ch26}
+# Coef is the file that includes the item parameters
+# ltmparam asks whether the latent trait parameterization is used for difficulty parameters
+# lparam asks whether the logistic parameterization is used for guessing parameters
+mod <- modIRT(coef = datakb,ltparam = FALSE, lparam = FALSE, display = FALSE)
+
+# Estimate equating constants using each method
+# mods: an object returned from modIRT
+# which: which forms to be equated
+# method: equating method
+eq_meanmean <- direc(mods = mod, which = c(1, 2), method = "mean-mean")
+eq_meansigma <- direc(mods = mod, which = c(1, 2), method = "mean-sigma")
+eq_SL <- direc(mods = mod, which = c(1, 2), method = "Stocking-Lord")
+eq_H <- direc(mods = mod, which = c(1, 2), method = "Haebara")
+```
+
+We can see the results using `summary`.
+
+```{r ch27}
+# See the results
+summary(eq_meanmean)
+summary(eq_meansigma)
+summary(eq_SL)
+summary(eq_H)
+```
+
+Now, let's assume that we only have the response data for both forms. First, we need to estimate the item parameters and then use the estimated parameters to find the equating constants. We will use the **mirt** package for model estimation.
+
+
+```{r ch28, eval=FALSE}
+install.packages("mirt")
+library("mirt")
+```
+
+Next, we will estimate the item parameters for each form.
+
+```{r ch29}
+# Response data
+kbx_data <- KB36$KBformX
+kby_data <- KB36$KBformY
+
+# Estimate the item parameters using 3PL
+modx <- mirt(kbx_data, model = 1, itemtype = "3PL", verbose = FALSE)
+mody <- mirt(kby_data, model = 1, itemtype = "3PL", verbose = FALSE)
+
+# Parameters of Form X
+parm.x <- coef(modx, IRTpars = TRUE, simplify = TRUE)$items[, c(1, 2, 3)]
+
+# Parameters of Form Y
+parm.y <- coef(mody, IRTpars = TRUE, simplify = TRUE)$items[, c(1, 2, 3)]
+
+# Rename the guessing parameter properly
+colnames(parm.x)[3] <- "c"
+colnames(parm.y)[3] <- "c"
+```
+
+Finally, we will combine the parameters in a single file and then estimate the equating constants.
+
+```{r ch30}
+# Combine the parameters from both forms
+parm.xy <- as.data.frame(cbind(parm.y, parm.x))
+
+# Parameters for common items
+common.items <- c(3, 6, 9, 12, 15, 18, 21, 24, 27, 30, 33, 36)
+
+# Equate the two forms
+irt.link(parm.xy, common.items, model = "3PL", icc = "logistic", D = 1.7)
+```
+
 

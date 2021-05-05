@@ -11,7 +11,7 @@
 
 
 
-<title>Classical Test Theory (CTT)</title>
+<title>Test Equating Based on Classical Test Theory (CTT)</title>
 
 <script src="site_libs/header-attrs-2.7/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
@@ -358,17 +358,18 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Classical Test Theory (CTT)</h1>
+<h1 class="title toc-ignore">Test Equating Based on Classical Test Theory (CTT)</h1>
 
 </div>
 
 
-<div id="equivalent-groups" class="section level1">
-<h1>Equivalent Groups</h1>
+<p><br></p>
+<div id="equivalent-random-groups" class="section level1">
+<h1>Equivalent (Random) Groups</h1>
 <p>In an equivalent group design, a random sample of examinees takes form X and a second random sample takes form Y. Because these are random samples from the same population, any differences in the distribution of scores are again assumed to be a function of test difficulty because the randomization should ensure that the two groups are equivalent in the ability being assessed.</p>
 <div id="example-setup" class="section level2">
 <h2>Example Setup</h2>
-<p>First, install and activate the <strong>equate</strong> package.</p>
+<p>First, we will install and activate the <strong>equate</strong> package.</p>
 <pre class="r"><code>install.packages(&quot;equate&quot;)
 library(&quot;equate&quot;)</code></pre>
 <p>Next, we will import the test forms (X and Y) into R. Each form has 1000 students taking either form X or form Y. Scores in both forms range from 20 to 50 points. In this example, assume that X is the new test form and Y is the reference test form. We want to place scores from form X into the scale of form Y.</p>
@@ -541,25 +542,34 @@ plot(equi_yx, equismooth_yx, addident = FALSE)</code></pre>
 <li>Frequency</li>
 <li>Chained</li>
 </ul>
+<p>The following table shows the combinations of these methods with the other equating types that we have seen so far:</p>
+<p><img src="images/neat.png" /></p>
 <div id="example-setup-1" class="section level2">
 <h2>Example Setup</h2>
 <p>The negd data set contains data on 2,000 examinees responding to 35 questions on a particular form of the test (either form X or form Y). Questions 1 through 25, labeled q.1, …, q.25, are unique to each form, while questions 26 through 35, labeled a.1, …, a.10, are the common anchor items.</p>
 <pre class="r"><code>negd &lt;- read.csv(&quot;negd.csv&quot;, header = TRUE)
 head(negd)</code></pre>
-<pre><code>##   q.1 q.2 q.3 q.4 q.5 q.6 q.7 q.8 q.9 q.10 q.11 q.12 q.13 q.14 q.15 q.16 q.17 q.18 q.19
-## 1   1   0   0   0   1   0   1   0   0    0    1    0    0    1    1    1    1    0    0
-## 2   0   0   1   1   1   0   0   0   1    0    1    1    1    0    0    0    0    0    1
-## 3   1   0   1   1   1   1   1   1   1    0    0    1    1    1    0    0    0    0    0
-## 4   0   1   1   0   0   0   0   1   0    0    0    0    1    1    0    1    0    0    0
-## 5   0   0   1   0   0   1   0   1   0    1    0    0    1    0    0    0    1    0    0
-## 6   0   0   1   1   1   0   1   0   0    0    1    1    1    1    0    1    1    1    1
-##   q.20 q.21 q.22 q.23 q.24 q.25 a.1 a.2 a.3 a.4 a.5 a.6 a.7 a.8 a.9 a.10 form
-## 1    0    1    1    0    1    0   0   0   0   0   0   0   0   1   0    0    x
-## 2    0    0    1    0    1    1   1   1   0   0   1   0   1   0   1    0    x
-## 3    0    1    1    0    0    0   0   1   1   1   1   0   1   0   0    1    x
-## 4    1    1    1    0    1    0   0   1   1   1   0   1   1   1   1    0    x
-## 5    1    0    1    0    1    1   0   0   1   1   0   1   0   0   0    1    x
-## 6    0    1    1    1    0    1   0   1   1   1   1   1   1   0   1    1    x</code></pre>
+<pre><code>##   q.1 q.2 q.3 q.4 q.5 q.6 q.7 q.8 q.9 q.10 q.11 q.12 q.13 q.14 q.15 q.16 q.17
+## 1   1   0   0   0   1   0   1   0   0    0    1    0    0    1    1    1    1
+## 2   0   0   1   1   1   0   0   0   1    0    1    1    1    0    0    0    0
+## 3   1   0   1   1   1   1   1   1   1    0    0    1    1    1    0    0    0
+## 4   0   1   1   0   0   0   0   1   0    0    0    0    1    1    0    1    0
+## 5   0   0   1   0   0   1   0   1   0    1    0    0    1    0    0    0    1
+## 6   0   0   1   1   1   0   1   0   0    0    1    1    1    1    0    1    1
+##   q.18 q.19 q.20 q.21 q.22 q.23 q.24 q.25 a.1 a.2 a.3 a.4 a.5 a.6 a.7 a.8 a.9
+## 1    0    0    0    1    1    0    1    0   0   0   0   0   0   0   0   1   0
+## 2    0    1    0    0    1    0    1    1   1   1   0   0   1   0   1   0   1
+## 3    0    0    0    1    1    0    0    0   0   1   1   1   1   0   1   0   0
+## 4    0    0    1    1    1    0    1    0   0   1   1   1   0   1   1   1   1
+## 5    0    0    1    0    1    0    1    1   0   0   1   1   0   1   0   0   0
+## 6    1    1    0    1    1    1    0    1   0   1   1   1   1   1   1   0   1
+##   a.10 form
+## 1    0    x
+## 2    0    x
+## 3    1    x
+## 4    0    x
+## 5    1    x
+## 6    1    x</code></pre>
 <p>Because the data are in a person-by-item format, for each person, we need to calculate their total score on the form, excluding the common anchor items, then their score on the common anchor items. Once this is done, frequency tables can be created, plotted, and then passed onto the <strong>equate</strong> function.</p>
 <pre class="r"><code># Calculate total scores based on unique items
 negd$total &lt;- rowSums(negd[, 1:25])
@@ -658,7 +668,8 @@ round(cbind(xscale = 0:25,
 ## [25,]     24   24.25  23.19 23.39 23.26
 ## [26,]     25   25.25  23.98 24.16 24.05</code></pre>
 <pre class="r"><code># Plot the results
-plot(negd_tucker, negd_nom, negd_freq, negd_braun, lty = rep(1:2, each = 2))</code></pre>
+plot(negd_tucker, negd_nom, negd_freq, negd_braun, lty=c(1,2,3,4),
+     col=c(&quot;blue&quot;, &quot;black&quot;, &quot;red&quot;, &quot;forestgreen&quot;), addident = FALSE)</code></pre>
 <p><img src="ctt_files/figure-html/ch19-1.png" width="672" /></p>
 </div>
 </div>

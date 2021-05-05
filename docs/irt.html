@@ -11,7 +11,7 @@
 
 
 
-<title>Item Response Theory (IRT)</title>
+<title>Test Equating Based on Item Response Theory (IRT)</title>
 
 <script src="site_libs/header-attrs-2.7/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
@@ -358,13 +358,358 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Item Response Theory (IRT)</h1>
+<h1 class="title toc-ignore">Test Equating Based on Item Response Theory (IRT)</h1>
 
 </div>
 
 
-<div id="title" class="section level1">
-<h1>Title</h1>
+<p><br></p>
+<p>Test equating with IRT methods falls into two broad categories:</p>
+<ul>
+<li>Equating through common items</li>
+<li>Equating through common people</li>
+</ul>
+<p>Either common items or common people serve as a bridge between two test forms. <br> <br></p>
+<div id="common-item-equating" class="section level1">
+<h1>Common Item Equating</h1>
+<p>Common item equating is done by using common items embedded in two different test forms. The most typical applications of common item equating include:</p>
+<ul>
+<li>equating by applying equating constants</li>
+<li>equating through test characteristics curves</li>
+<li>equating by concurrent (or simultaneous) calibration</li>
+</ul>
+<div id="equating-with-equating-constants" class="section level2">
+<h2>Equating with Equating Constants</h2>
+<p>Because the parameters from different test forms need to be on the same scale, IRT parameter linking is conducted to place the IRT parameter estimates from separate calibrations of two test forms onto a common scale. To transform the theta (<span class="math inline">\(\theta\)</span>) scores linearly from one form to another, two equating constants (A and B) are necessary:</p>
+<p><span class="math display">\[\theta_{Y} = A\theta_X + B\]</span> The relations between item parameters on the two test forms are as follows:</p>
+<p><span class="math display">\[a_Y = a_X / A\]</span></p>
+<p><span class="math display">\[b_Y = Ab_X + B\]</span></p>
+<p><span class="math display">\[c_Y = c_X\]</span></p>
+<p>where A and B are equating constants that need to be estimated.</p>
+<p>There are two types of methods to calculate A and B constants. The mean-mean method uses the following method to compute the A constant:</p>
+<p><span class="math display">\[A = \frac{\mu_{a_X}}{\mu_{a_Y}}\]</span></p>
+<p>while the mean-sigma method uses the following method:</p>
+<p><span class="math display">\[A = \frac{\sigma_{a_X}}{\sigma_{a_Y}}\]</span></p>
+<p>where <span class="math inline">\(\mu_{a_X}\)</span> and <span class="math inline">\(\mu_{a_Y}\)</span> are mean of the item discrimination parameter estimates taken only on the set of common items for forms X and Y; <span class="math inline">\(\sigma_{a_X}\)</span> and <span class="math inline">\(\sigma_{a_Y}\)</span> are the standard deviations of the item discrimination parameter estimates taken only on the set of common items for forms X and Y.</p>
+<p>For both the mean-mean and mean-sigma methods, the B constant can be computed as:</p>
+<p><span class="math display">\[B = \mu_{b_Y} - \mu_{b_X}\]</span></p>
+<p>where <span class="math inline">\(\mu_{b_Y}\)</span> and <span class="math inline">\(\mu_{b_X}\)</span> are the mean of the item difficulty parameter estimates taken only on the set of common items for forms X and Y.</p>
+</div>
+<div id="equating-through-ttc" class="section level2">
+<h2>Equating through TTC</h2>
+<p>Two additional methods to obtain the equating coefficients were proposed by Haebara (1980) and Stocking and Lord (1983). Both methods work through IRT Test Characteristics Curves (TCCs) to find the A and B constants. A TCC shows the relationship between the IRT ability parameter (i.e., <span class="math inline">\(\theta\)</span>) and the expected raw score on a test. These methods look for optimal weightings that can be applied to the item parameters for the common items on Form X so that they become very similar to those from form Y. After the equating is performed, the TCCs of the common items should be as similar as possible between forms X and Y.</p>
+</div>
+<div id="equating-by-concurrent-calibration" class="section level2">
+<h2>Equating by Concurrent Calibration</h2>
+<p>Equating by concurrent calibration involves identifying the common items on a test form or item bank and using them as the origin for equating without adding (or subtracting) any equating constant. Instead, when using the concurrent calibration approach, the IRT item characteristics for the common items on two separate forms are expected to remain fixed and link the parameters of the unique items. In other words, the common items are assumed to set the scale for different forms and thereby placing the item parameter estimates onto the same scale.</p>
+</div>
+</div>
+<div id="common-person-equating" class="section level1">
+<h1>Common Person Equating</h1>
+<p>Common person equating might be considered the inverse of common item equating. Instead of using previously tested items with previously fixed parameters, previously tested people with previously fixed abilities are used to adjust the item parameters. In other words, to perform common person equating, the IRT ability of students is estimated based on the reference test form. Then, these ability estimates are then fixed and held constant when students take a different form. In the item calibration process, known ability estimates are used to estimate item parameters for the new form. This procedure is expected to place the item parameters from the new form onto the scale of the reference form.</p>
+</div>
+<div id="example" class="section level1">
+<h1>Example</h1>
+<p>In this example, we will use data from two forms (X and Y) of a 36-item test from the <strong>SNSequate</strong> package and apply IRT-based equating methods. The data set contains both response patterns and item parameters estimates following a 3PL model for two 36-items tests forms. Form X was administered to 1655 examinees and form Y to 1638 examinees. Also, 12 out of the 36 items are common between both test forms (items 3, 6, 9, 12, 15, 18, 21, 24, 27, 30, 33, 36).</p>
+<p>First, we will install and activate the <strong>SNSequate</strong> package.</p>
+<pre class="r"><code>install.packages(&quot;SNSequate&quot;)
+library(&quot;SNSequate&quot;)</code></pre>
+<p>Then, we will activate the KB36 data set and check its content.</p>
+<pre class="r"><code>data(&quot;KB36&quot;)
+str(KB36)</code></pre>
+<pre><code>## List of 4
+##  $ KBformX    :&#39;data.frame&#39;: 1655 obs. of  36 variables:
+##   ..$ It1 : int [1:1655] 1 1 1 1 1 1 1 1 0 1 ...
+##   ..$ It2 : int [1:1655] 0 0 1 0 1 1 0 1 0 1 ...
+##   ..$ It3 : int [1:1655] 1 1 1 0 1 1 0 0 1 1 ...
+##   ..$ It4 : int [1:1655] 0 0 1 0 0 1 0 1 0 1 ...
+##   ..$ It5 : int [1:1655] 0 1 1 1 1 1 1 0 0 0 ...
+##   ..$ It6 : int [1:1655] 1 1 0 1 0 1 1 0 0 1 ...
+##   ..$ It7 : int [1:1655] 1 1 1 0 1 1 0 0 0 0 ...
+##   ..$ It8 : int [1:1655] 1 0 1 0 0 1 1 0 1 1 ...
+##   ..$ It9 : int [1:1655] 0 1 1 0 1 1 1 1 0 0 ...
+##   ..$ It10: int [1:1655] 0 1 1 0 1 1 1 0 0 1 ...
+##   ..$ It11: int [1:1655] 0 0 1 0 0 1 0 0 0 1 ...
+##   ..$ It12: int [1:1655] 0 1 1 0 0 1 1 0 0 1 ...
+##   ..$ It13: int [1:1655] 0 1 1 0 1 1 1 0 0 1 ...
+##   ..$ It14: int [1:1655] 0 1 1 0 1 1 0 0 0 1 ...
+##   ..$ It15: int [1:1655] 0 0 1 0 1 1 1 0 0 1 ...
+##   ..$ It16: int [1:1655] 0 1 1 0 1 1 0 1 0 1 ...
+##   ..$ It17: int [1:1655] 0 1 1 1 1 1 1 0 0 1 ...
+##   ..$ It18: int [1:1655] 0 1 1 0 0 1 0 0 1 1 ...
+##   ..$ It19: int [1:1655] 0 1 1 0 1 1 1 1 0 1 ...
+##   ..$ It20: int [1:1655] 0 1 1 1 1 1 1 0 0 0 ...
+##   ..$ It21: int [1:1655] 1 0 0 0 1 1 1 1 1 0 ...
+##   ..$ It22: int [1:1655] 1 0 1 0 0 1 1 0 1 0 ...
+##   ..$ It23: int [1:1655] 0 1 1 0 1 1 0 0 0 1 ...
+##   ..$ It24: int [1:1655] 0 0 1 0 0 1 0 0 0 0 ...
+##   ..$ It25: int [1:1655] 0 1 0 0 0 1 1 0 0 1 ...
+##   ..$ It26: int [1:1655] 0 0 1 0 0 1 1 0 0 1 ...
+##   ..$ It27: int [1:1655] 0 1 1 1 0 1 0 0 1 1 ...
+##   ..$ It28: int [1:1655] 0 1 0 0 0 1 0 0 0 0 ...
+##   ..$ It29: int [1:1655] 0 0 1 0 1 1 0 0 0 0 ...
+##   ..$ It30: int [1:1655] 0 0 1 0 1 1 0 0 0 0 ...
+##   ..$ It31: int [1:1655] 0 1 1 1 0 1 1 0 1 0 ...
+##   ..$ It32: int [1:1655] 0 1 1 0 0 1 0 1 0 0 ...
+##   ..$ It33: int [1:1655] 0 0 1 0 0 1 0 0 1 0 ...
+##   ..$ It34: int [1:1655] 0 0 0 0 0 1 0 0 0 0 ...
+##   ..$ It35: int [1:1655] 1 0 1 0 0 1 0 0 0 0 ...
+##   ..$ It36: int [1:1655] 0 0 1 0 0 1 0 0 0 0 ...
+##  $ KBformY    :&#39;data.frame&#39;: 1638 obs. of  36 variables:
+##   ..$ It1 : int [1:1638] 1 1 1 1 1 1 1 1 1 1 ...
+##   ..$ It2 : int [1:1638] 1 1 0 0 1 0 0 0 0 1 ...
+##   ..$ It3 : int [1:1638] 1 1 1 1 1 0 1 1 1 1 ...
+##   ..$ It4 : int [1:1638] 1 0 1 1 1 1 0 1 1 1 ...
+##   ..$ It5 : int [1:1638] 1 1 1 1 1 1 1 1 1 1 ...
+##   ..$ It6 : int [1:1638] 1 1 1 1 0 1 1 1 1 1 ...
+##   ..$ It7 : int [1:1638] 1 0 1 1 0 1 0 0 0 1 ...
+##   ..$ It8 : int [1:1638] 1 1 1 0 0 0 1 0 0 1 ...
+##   ..$ It9 : int [1:1638] 1 0 0 0 1 1 1 1 1 1 ...
+##   ..$ It10: int [1:1638] 1 1 1 1 1 1 1 1 0 1 ...
+##   ..$ It11: int [1:1638] 1 1 0 1 1 1 1 0 1 0 ...
+##   ..$ It12: int [1:1638] 0 0 1 1 1 1 1 0 0 1 ...
+##   ..$ It13: int [1:1638] 1 1 0 0 1 1 0 1 1 1 ...
+##   ..$ It14: int [1:1638] 1 1 0 1 1 1 0 0 1 0 ...
+##   ..$ It15: int [1:1638] 1 1 1 0 0 0 0 0 0 1 ...
+##   ..$ It16: int [1:1638] 1 0 0 1 0 1 1 1 0 1 ...
+##   ..$ It17: int [1:1638] 1 0 1 1 1 0 0 1 0 0 ...
+##   ..$ It18: int [1:1638] 1 1 0 1 0 1 1 0 1 1 ...
+##   ..$ It19: int [1:1638] 1 0 0 1 0 1 0 1 0 1 ...
+##   ..$ It20: int [1:1638] 1 0 1 1 0 1 1 1 0 0 ...
+##   ..$ It21: int [1:1638] 0 1 0 0 0 0 1 0 1 0 ...
+##   ..$ It22: int [1:1638] 0 1 1 1 1 0 1 1 1 1 ...
+##   ..$ It23: int [1:1638] 1 0 1 1 1 0 0 1 0 0 ...
+##   ..$ It24: int [1:1638] 1 0 0 1 0 0 0 0 0 0 ...
+##   ..$ It25: int [1:1638] 0 0 1 1 1 1 0 0 1 0 ...
+##   ..$ It26: int [1:1638] 0 1 0 1 1 0 0 0 1 0 ...
+##   ..$ It27: int [1:1638] 1 0 1 1 0 1 0 0 0 1 ...
+##   ..$ It28: int [1:1638] 1 0 1 0 0 0 0 1 1 0 ...
+##   ..$ It29: int [1:1638] 1 0 0 1 0 0 0 0 0 0 ...
+##   ..$ It30: int [1:1638] 1 0 0 1 1 0 0 0 0 0 ...
+##   ..$ It31: int [1:1638] 1 0 0 0 0 0 0 0 0 0 ...
+##   ..$ It32: int [1:1638] 1 0 0 0 1 0 0 0 0 0 ...
+##   ..$ It33: int [1:1638] 1 0 0 0 1 0 0 0 0 1 ...
+##   ..$ It34: int [1:1638] 0 1 0 0 0 0 0 0 0 0 ...
+##   ..$ It35: int [1:1638] 1 0 0 1 0 0 1 0 0 0 ...
+##   ..$ It36: int [1:1638] 0 0 1 0 0 0 0 0 0 0 ...
+##  $ KBformX_par: num [1:36, 1:3] 0.55 0.789 0.455 1.444 0.974 ...
+##   ..- attr(*, &quot;dimnames&quot;)=List of 2
+##   .. ..$ : NULL
+##   .. ..$ : chr [1:3] &quot;a&quot; &quot;b&quot; &quot;c&quot;
+##  $ KBformY_par: num [1:36, 1:3] 0.87 0.463 0.442 0.545 0.62 ...
+##   ..- attr(*, &quot;dimnames&quot;)=List of 2
+##   .. ..$ : NULL
+##   .. ..$ : chr [1:3] &quot;a&quot; &quot;b&quot; &quot;c&quot;</code></pre>
+<p>Now we will save the item parameters in separate files and prepare them for equating analysis.</p>
+<pre class="r"><code># Parameters of Form X
+parm.x &lt;- KB36$KBformX_par
+
+# Parameters of Form Y
+parm.y &lt;- KB36$KBformY_par
+
+# Combine the parameters from both forms
+parm.xy &lt;- as.data.frame(cbind(parm.y, parm.x))
+
+# Parameters for common items
+common.items &lt;- c(3, 6, 9, 12, 15, 18, 21, 24, 27, 30, 33, 36)
+
+# Equate the two forms
+irt.link(parm.xy, common.items, model = &quot;3PL&quot;, icc = &quot;logistic&quot;, D = 1.7)</code></pre>
+<pre><code>## 
+## Call:
+## irt.link.default(parm = parm.xy, common = common.items, model = &quot;3PL&quot;, 
+##     icc = &quot;logistic&quot;, D = 1.7)
+## 
+## IRT parameter-linking constants:
+## 
+##                   A       B
+## Mean-Mean     1.217 -0.5572
+## Mean-Sigma    1.169 -0.5155
+## Haebara       1.094 -0.4583
+## Stocking-Lord 1.102 -0.4770</code></pre>
+<p>We can also replicate the same analysis using the <strong>equateIRT</strong> package. So, let’s install and activate the package.</p>
+<pre class="r"><code>install.packages(&quot;equateIRT&quot;)
+library(&quot;equateIRT&quot;)</code></pre>
+<p>The <strong>equateIRT</strong> package has two functions to perform equating:</p>
+<p><code>modIRT(coef, var = NULL,...)</code></p>
+<p><code>direc(mod1, mod2, method = "mean-mean",...)</code></p>
+<p>First, we need to save the item parameters as a <code>modIRT</code> object and then use the object in the <code>direc</code> function to estimate the equating constants. The row names in the matrix provided in the argument <code>coef</code> must be the names given to the items because this is the information that is used to differentiate between common and unique items in the equating process. This means that we need to use different names on the unique items and the same names on the common items. The following code shows a possible way to correctly assign names to the items.</p>
+<pre class="r"><code># Parameters of form X - guessing, difficulty, discrimination
+kbx &lt;- cbind(KB36$KBformX_par[,3], KB36$KBformX_par[,2], KB36$KBformX_par[,1])
+
+# Parameters of form Y - guessing, difficulty, discrimination
+kby &lt;- cbind(KB36$KBformY_par[,3],KB36$KBformY_par[,2], KB36$KBformY_par[,1])
+
+# Rename the items differently: I1 to I36 in Form X; I37 to I60 in Form Y
+row.names(kbx) &lt;- paste0(&quot;I&quot;, 1:36)
+row.names(kby) &lt;- paste0(&quot;I&quot;, c(37,38, 3,39,40, 6,41,42, 9,43,44, 12,45,46, 15,47,48, 18,49,50, 21,51,52,24,53,54, 27,55,56, 30,57,58, 33,59,60, 36))
+
+# Combine the parameters in a list
+datakb &lt;- list(kbx, kby)
+datakb</code></pre>
+<pre><code>## [[1]]
+##       [,1]    [,2]   [,3]
+## I1  0.1751 -1.7960 0.5496
+## I2  0.1165 -0.4796 0.7891
+## I3  0.2087 -0.7101 0.4551
+## I4  0.2826  0.4833 1.4443
+## I5  0.2625 -0.1680 0.9740
+## I6  0.2038 -0.8567 0.5839
+## I7  0.3224  0.4546 0.8604
+## I8  0.2209 -0.1301 1.1445
+## I9  0.1600  0.0212 0.7544
+## I10 0.3648  1.0139 0.9170
+## I11 0.2399  0.7218 0.9592
+## I12 0.1240  0.0506 0.6633
+## I13 0.2535  0.4167 1.2324
+## I14 0.1569  0.7882 1.0492
+## I15 0.2986  0.9610 1.0690
+## I16 0.2521  0.6099 0.9193
+## I17 0.2273  0.5128 0.8935
+## I18 0.0535  0.1950 0.9672
+## I19 0.1201  0.3953 0.6562
+## I20 0.2036  0.9481 1.0556
+## I21 0.1489  2.2768 0.3479
+## I22 0.2332  1.0601 0.8432
+## I23 0.0644  0.5826 1.1142
+## I24 0.2453  1.0241 1.4579
+## I25 0.1427  1.3790 0.5137
+## I26 0.0879  1.0782 0.9194
+## I27 0.1992  1.4062 1.8811
+## I28 0.1642  1.5093 1.5045
+## I29 0.1431  1.5443 0.9664
+## I30 0.0853  2.2401 0.7020
+## I31 0.2443  1.8759 1.2651
+## I32 0.0865  1.7140 0.8567
+## I33 0.0789  1.5556 1.4080
+## I34 0.1399  3.4728 0.5808
+## I35 0.1090  3.1202 0.9257
+## I36 0.1075  2.1589 1.2993
+## 
+## [[2]]
+##       [,1]    [,2]   [,3]
+## I37 0.1576 -1.4507 0.8704
+## I38 0.1094 -0.4070 0.4628
+## I3  0.1559 -1.3349 0.4416
+## I39 0.1381 -0.9017 0.5448
+## I40 0.2114 -1.4865 0.6200
+## I6  0.1913 -1.3210 0.5730
+## I41 0.2947  0.0691 1.1752
+## I42 0.2723  0.2324 0.4450
+## I9  0.1177 -0.7098 0.5987
+## I43 0.1445 -0.4253 0.8479
+## I44 0.0936 -0.8184 1.0320
+## I12 0.0818 -0.3539 0.6041
+## I45 0.1283 -0.0191 0.8297
+## I46 0.0854 -0.3155 0.7252
+## I15 0.3024  0.5320 0.9902
+## I47 0.2179  0.5394 0.7749
+## I48 0.2299  0.8987 0.5942
+## I18 0.0648 -0.1156 0.8081
+## I49 0.1633 -0.1948 0.9640
+## I50 0.1299  0.3506 0.7836
+## I21 0.2410  2.5538 0.4140
+## I51 0.1137 -0.1581 0.7618
+## I52 0.2397  0.5056 1.1959
+## I24 0.2243  0.5811 1.3554
+## I53 0.2577  0.6229 1.1869
+## I54 0.1856  0.3898 1.0296
+## I27 0.1651  0.9392 1.0417
+## I55 0.2323  1.1350 1.2055
+## I56 0.1070  0.6976 0.9697
+## I30 0.0794  1.8960 0.6336
+## I57 0.1855  1.3864 1.0822
+## I58 0.1027  0.9197 1.0195
+## I33 0.0630  1.0790 1.1347
+## I59 0.0999  1.8411 1.1948
+## I60 0.0832  2.0297 1.1961
+## I36 0.1259  2.1337 0.9255</code></pre>
+<p>Now, the common items have the same name whereas the remaining items in Forms X and Y have different names. We can use this list to estimate the equating constants.</p>
+<pre class="r"><code># Coef is the file that includes the item parameters
+# ltmparam asks whether the latent trait parameterization is used for difficulty parameters
+# lparam asks whether the logistic parameterization is used for guessing parameters
+mod &lt;- modIRT(coef = datakb,ltparam = FALSE, lparam = FALSE, display = FALSE)
+
+# Estimate equating constants using each method
+# mods: an object returned from modIRT
+# which: which forms to be equated
+# method: equating method
+eq_meanmean &lt;- direc(mods = mod, which = c(1, 2), method = &quot;mean-mean&quot;)
+eq_meansigma &lt;- direc(mods = mod, which = c(1, 2), method = &quot;mean-sigma&quot;)
+eq_SL &lt;- direc(mods = mod, which = c(1, 2), method = &quot;Stocking-Lord&quot;)
+eq_H &lt;- direc(mods = mod, which = c(1, 2), method = &quot;Haebara&quot;)</code></pre>
+<p>We can see the results using <code>summary</code>.</p>
+<pre class="r"><code># See the results
+summary(eq_meanmean)</code></pre>
+<pre><code>## Link: T1.T2 
+## Method: mean-mean 
+## Equating coefficients:
+##   Estimate StdErr
+## A  1.21727     NA
+## B -0.55716     NA</code></pre>
+<pre class="r"><code>summary(eq_meansigma)</code></pre>
+<pre><code>## Link: T1.T2 
+## Method: mean-sigma 
+## Equating coefficients:
+##   Estimate StdErr
+## A  1.16889     NA
+## B -0.51554     NA</code></pre>
+<pre class="r"><code>summary(eq_SL)</code></pre>
+<pre><code>## Link: T1.T2 
+## Method: Stocking-Lord 
+## Equating coefficients:
+##   Estimate StdErr
+## A  1.12386     NA
+## B -0.53235     NA</code></pre>
+<pre class="r"><code>summary(eq_H)</code></pre>
+<pre><code>## Link: T1.T2 
+## Method: Haebara 
+## Equating coefficients:
+##   Estimate StdErr
+## A  1.10107     NA
+## B -0.51577     NA</code></pre>
+<p>Now, let’s assume that we only have the response data for both forms. First, we need to estimate the item parameters and then use the estimated parameters to find the equating constants. We will use the <strong>mirt</strong> package for model estimation.</p>
+<pre class="r"><code>install.packages(&quot;mirt&quot;)
+library(&quot;mirt&quot;)</code></pre>
+<p>Next, we will estimate the item parameters for each form.</p>
+<pre class="r"><code># Response data
+kbx_data &lt;- KB36$KBformX
+kby_data &lt;- KB36$KBformY
+
+# Estimate the item parameters using 3PL
+modx &lt;- mirt(kbx_data, model = 1, itemtype = &quot;3PL&quot;, verbose = FALSE)
+mody &lt;- mirt(kby_data, model = 1, itemtype = &quot;3PL&quot;, verbose = FALSE)
+
+# Parameters of Form X
+parm.x &lt;- coef(modx, IRTpars = TRUE, simplify = TRUE)$items[, c(1, 2, 3)]
+
+# Parameters of Form Y
+parm.y &lt;- coef(mody, IRTpars = TRUE, simplify = TRUE)$items[, c(1, 2, 3)]
+
+# Rename the guessing parameter properly
+colnames(parm.x)[3] &lt;- &quot;c&quot;
+colnames(parm.y)[3] &lt;- &quot;c&quot;</code></pre>
+<p>Finally, we will combine the parameters in a single file and then estimate the equating constants.</p>
+<pre class="r"><code># Combine the parameters from both forms
+parm.xy &lt;- as.data.frame(cbind(parm.y, parm.x))
+
+# Parameters for common items
+common.items &lt;- c(3, 6, 9, 12, 15, 18, 21, 24, 27, 30, 33, 36)
+
+# Equate the two forms
+irt.link(parm.xy, common.items, model = &quot;3PL&quot;, icc = &quot;logistic&quot;, D = 1.7)</code></pre>
+<pre><code>## 
+## Call:
+## irt.link.default(parm = parm.xy, common = common.items, model = &quot;3PL&quot;, 
+##     icc = &quot;logistic&quot;, D = 1.7)
+## 
+## IRT parameter-linking constants:
+## 
+##                   A       B
+## Mean-Mean     1.228 -0.5461
+## Mean-Sigma    1.254 -0.5673
+## Haebara       1.123 -0.4566
+## Stocking-Lord 1.106 -0.4432</code></pre>
 </div>
 
 
