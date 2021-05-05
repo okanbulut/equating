@@ -508,6 +508,13 @@ linear_yx</code></pre>
 ## Coefficients:
 ## intercept     slope        cx        cy        sx        sy 
 ##    6.3199    0.9311   35.0000   35.0000   30.0000   30.0000</code></pre>
+<p>We can check out the equated scores against the original scores as follows:</p>
+<pre class="r"><code>plot(linear_yx)</code></pre>
+<p><img src="ctt_files/figure-html/ch10a-1.png" width="672" /></p>
+<p>We can also run a bootstrap for the equating process and create a standard error plot:</p>
+<pre class="r"><code>linear_yx_boot &lt;- equate(data_x, data_y, type = &quot;linear&quot;, boot = TRUE, reps = 5)
+plot(linear_yx_boot, out = &quot;se&quot;)</code></pre>
+<p><img src="ctt_files/figure-html/ch10b-1.png" width="672" /></p>
 </div>
 </div>
 <div id="non-linear-equating" class="section level2">

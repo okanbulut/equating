@@ -49,9 +49,14 @@ data_xy <- merge(data_x, form_yx)
 head(data_xy)
 
 ### Linear Equating
-
 linear_yx <- equate(data_x, data_y, type = "linear")
 linear_yx
+
+plot(linear_yx)
+
+linear_yx_boot <- equate(data_x, data_y, type = "linear", boot = TRUE, reps = 5)
+plot(linear_yx_boot, out = "se")
+
 
 ### Equipercentile Equating
 equi_yx <- equate(data_x, data_y, type = "equipercentile")

@@ -118,6 +118,19 @@ linear_yx <- equate(data_x, data_y, type = "linear")
 linear_yx
 ```
 
+We can check out the equated scores against the original scores as follows:
+
+```{r ch10a}
+plot(linear_yx)
+```
+
+We can also run a bootstrap for the equating process and create a standard error plot:
+
+```{r ch10b}
+linear_yx_boot <- equate(data_x, data_y, type = "linear", boot = TRUE, reps = 5)
+plot(linear_yx_boot, out = "se")
+```
+
 ## Non-Linear Equating
 
 The nonlinear equating methods include equipercentile, circle-arc, and composite functions.
@@ -146,6 +159,7 @@ equismooth_yx <- equate(data_x, data_y, type = "equipercentile", smooth = "logli
 # Compare equating functions
 plot(equi_yx, equismooth_yx, addident = FALSE)
 ```
+
 
 # Nonequivalent Groups
 
@@ -236,6 +250,3 @@ round(cbind(xscale = 0:25,
 plot(negd_tucker, negd_nom, negd_freq, negd_braun, lty=c(1,2,3,4),
      col=c("blue", "black", "red", "forestgreen"), addident = FALSE)
 ```
-
-
-
