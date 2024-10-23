@@ -13,8 +13,8 @@
 
 <title>Test Equating Using R</title>
 
-<script src="site_libs/header-attrs-2.7/header-attrs.js"></script>
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.22/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -32,8 +32,8 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
-<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet" />
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -62,6 +62,7 @@ if (window.hljs) {
 
 
 
+
 <style type = "text/css">
 .main-container {
   max-width: 940px;
@@ -82,6 +83,9 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
 }
 pre code {
   padding: 0;
@@ -139,11 +143,15 @@ $(document).ready(function () {
     href = "index.html";
   var menuAnchor = $('a[href="' + href + '"]');
 
-  // mark it active
-  menuAnchor.tab('show');
-
-  // if it's got a parent navbar menu mark it active as well
-  menuAnchor.closest('li.dropdown').addClass('active');
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
 
   // Navbar adjustments
   var navHeight = $(".navbar").first().height() + 15;
@@ -172,8 +180,8 @@ $(document).ready(function () {
   border-radius: 4px;
 }
 
-.tabset-dropdown > .nav-tabs > li.active:before {
-  content: "";
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
   font-family: 'Glyphicons Halflings';
   display: inline-block;
   padding: 10px;
@@ -181,16 +189,9 @@ $(document).ready(function () {
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "&#xe258;";
-  border: none;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "";
+  content: "\e258";
   font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
+  border: none;
 }
 
 .tabset-dropdown > .nav-tabs > li.active {
@@ -234,7 +235,7 @@ $(document).ready(function () {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -245,21 +246,21 @@ $(document).ready(function () {
       <ul class="nav navbar-nav">
         <li>
   <a href="index.html">
-    <span class="fas fa-home"></span>
+    <span class="fa fa-home"></span>
      
     Home
   </a>
 </li>
 <li>
   <a href="ctt.html">
-    <span class="fas fa-circle"></span>
+    <span class="fa fa-circle"></span>
      
     CTT
   </a>
 </li>
 <li>
   <a href="irt.html">
-    <span class="fas fa-square"></span>
+    <span class="fa fa-square"></span>
      
     IRT
   </a>
@@ -284,32 +285,73 @@ $(document).ready(function () {
 <p><br></p>
 <p><img src="images/statistics3.png" /></p>
 <p><br> <br></p>
-<p><strong>Test equating</strong> refers to statistical procedures to establish comparable scores on different forms of a test, allowing test scores from each form to be used interchangeably. It allows test administrators to establish validity of test results across different forms and years. This online resource aims to present practical applications of test equating in R by drawing upon information from a variety of resources about test equating, linking, and scaling. Well-known test equating methods in Classical Test Theory (CTT) and Item Response Theory (IRT) are demonstrated using various examples in R. A zipped folder including the R codes and datasets used in the examples can be downloaded <strong><a href="https://github.com/okanbulut/equating/raw/main/codes_data/codes_data.zip">here</a></strong>. <br> <br></p>
-<div id="a-list-of-some-r-packages-for-test-equating" class="section level2">
+<p><strong>Test equating</strong> refers to statistical procedures to
+establish comparable scores on different forms of a test, allowing test
+scores from each form to be used interchangeably. It allows test
+administrators to establish validity of test results across different
+forms and years. This online resource aims to present practical
+applications of test equating in R by drawing upon information from a
+variety of resources about test equating, linking, and scaling.
+Well-known test equating methods in Classical Test Theory (CTT) and Item
+Response Theory (IRT) are demonstrated using various examples in R. A
+zipped folder including the R codes and datasets used in the examples
+can be downloaded <strong><a
+href="https://github.com/okanbulut/equating/raw/main/codes_data/codes_data.zip">here</a></strong>.
+<br> <br></p>
+<div id="a-list-of-some-r-packages-for-test-equating"
+class="section level2">
 <h2>A List of (Some) R Packages for Test Equating</h2>
 <ul>
-<li><a href="https://cran.r-project.org/web/packages/equate/index.html">equate</a> (CTT)</li>
-<li><a href="https://cran.r-project.org/web/packages/SNSequate/index.html">SNSequate</a> (CTT, IRT)</li>
+<li><a
+href="https://cran.r-project.org/web/packages/equate/index.html">equate</a>
+(CTT)</li>
+<li><a
+href="https://cran.r-project.org/web/packages/SNSequate/index.html">SNSequate</a>
+(CTT, IRT)</li>
 <li><a href="https://github.com/twolodzko/equi/">equi</a> (CTT)</li>
-<li><a href="https://cran.r-project.org/web/packages/plink/">plink</a> (IRT)</li>
-<li><a href="https://cran.r-project.org/web/packages/equateIRT/index.html">equateIRT</a> (IRT)</li>
-<li><a href="https://cran.r-project.org/web/packages/equateMultiple/index.html">equateMultiple</a> (IRT)</li>
+<li><a href="https://cran.r-project.org/web/packages/plink/">plink</a>
+(IRT)</li>
+<li><a
+href="https://cran.r-project.org/web/packages/equateIRT/index.html">equateIRT</a>
+(IRT)</li>
+<li><a
+href="https://cran.r-project.org/web/packages/equateMultiple/index.html">equateMultiple</a>
+(IRT)</li>
 </ul>
-<p><strong>Note:</strong> CTT: Classical Test Theory; IRT: Item Response Theory. <br> <br></p>
+<p><strong>Note:</strong> CTT: Classical Test Theory; IRT: Item Response
+Theory. <br> <br></p>
 </div>
 <div id="additional-resources" class="section level2">
 <h2>Additional Resources</h2>
 <ul>
-<li><p>Michael Kolen and Robert Brennan’s seminal book on equating: <a href="https://www.springer.com/gp/book/9781493903160">Test Equating, Scaling, and Linking: Methods and Practices</a></p></li>
-<li><p>Jorge González and Marie Wiberg’s <a href="https://www.springer.com/gp/book/9783319518220">Applying Test Equating Methods</a></p></li>
-<li><p>Christopher Desjardins and Okan Bulut’s <a href="https://www.routledge.com/Handbook-of-Educational-Measurement-and-Psychometrics-Using/Desjardins-Bulut/p/book/9780367734671">Handbook of Educational Measurement and Psychometrics Using R</a></p></li>
-<li><p>CCSSO’s guidelines on equating: <a href="https://ccsso.org/sites/default/files/2018-06/A%20Practitioners%20Introduction%20to%20Equating%20revised%20edition.pdf">A Practitioners’ Introduction to Equating</a></p></li>
-<li><p>Anthony Albano’s <a href="https://cran.r-project.org/web/packages/equate/vignettes/equate-jss.pdf">vignette</a> for the <strong>equate</strong> package</p></li>
-<li><p>Jonathan Week’s <a href="https://cran.r-project.org/web/packages/plink/vignettes/plink-UD.pdf">vignette</a> for the <strong>plink</strong> package</p></li>
-<li><p>Michela Battauz’s <a href="https://www.jstatsoft.org/article/view/v068i07/v68i07.pdf">article</a> on the <strong>equateIRT</strong> package</p></li>
+<li><p>Michael Kolen and Robert Brennan’s seminal book on equating: <a
+href="https://www.springer.com/gp/book/9781493903160">Test Equating,
+Scaling, and Linking: Methods and Practices</a></p></li>
+<li><p>Jorge González and Marie Wiberg’s <a
+href="https://www.springer.com/gp/book/9783319518220">Applying Test
+Equating Methods</a></p></li>
+<li><p>Christopher Desjardins and Okan Bulut’s <a
+href="https://www.routledge.com/Handbook-of-Educational-Measurement-and-Psychometrics-Using/Desjardins-Bulut/p/book/9780367734671">Handbook
+of Educational Measurement and Psychometrics Using R</a></p></li>
+<li><p>CCSSO’s guidelines on equating: <a
+href="https://files.eric.ed.gov/fulltext/ED544690.pdf">A Practitioners’
+Introduction to Equating</a></p></li>
+<li><p>Anthony Albano’s <a
+href="https://cran.r-project.org/web/packages/equate/vignettes/equate-jss.pdf">vignette</a>
+for the <strong>equate</strong> package</p></li>
+<li><p>Jonathan Week’s <a
+href="https://cran.r-project.org/web/packages/plink/vignettes/plink-UD.pdf">vignette</a>
+for the <strong>plink</strong> package</p></li>
+<li><p>Michela Battauz’s <a
+href="https://www.jstatsoft.org/article/view/v068i07/v68i07.pdf">article</a>
+on the <strong>equateIRT</strong> package</p></li>
 </ul>
 <hr />
-<p><strong>Note:</strong> This online resource has been prepared by <a href="https://sites.google.com/ualberta.ca/okanbulut/">Dr. Okan Bulut</a>. For questions and comments, please contact Dr. Okan Bulut via email: <a href="mailto:bulut@ualberta.ca" class="email">bulut@ualberta.ca</a></p>
+<p><strong>Note:</strong> This online resource has been prepared by <a
+href="https://sites.google.com/ualberta.ca/okanbulut/">Dr. Okan
+Bulut</a>. For questions and comments, please contact Dr. Okan Bulut via
+email: <a href="mailto:bulut@ualberta.ca"
+class="email">bulut@ualberta.ca</a></p>
 </div>
 
 

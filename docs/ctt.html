@@ -13,8 +13,8 @@
 
 <title>Test Equating Based on Classical Test Theory (CTT)</title>
 
-<script src="site_libs/header-attrs-2.7/header-attrs.js"></script>
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.22/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -29,14 +29,14 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
-<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
-<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet" />
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -65,6 +65,7 @@ if (window.hljs) {
 
 
 
+
 <style type = "text/css">
 .main-container {
   max-width: 940px;
@@ -85,6 +86,9 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
 }
 pre code {
   padding: 0;
@@ -142,11 +146,15 @@ $(document).ready(function () {
     href = "index.html";
   var menuAnchor = $('a[href="' + href + '"]');
 
-  // mark it active
-  menuAnchor.tab('show');
-
-  // if it's got a parent navbar menu mark it active as well
-  menuAnchor.closest('li.dropdown').addClass('active');
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
 
   // Navbar adjustments
   var navHeight = $(".navbar").first().height() + 15;
@@ -175,8 +183,8 @@ $(document).ready(function () {
   border-radius: 4px;
 }
 
-.tabset-dropdown > .nav-tabs > li.active:before {
-  content: "";
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
   font-family: 'Glyphicons Halflings';
   display: inline-block;
   padding: 10px;
@@ -184,16 +192,9 @@ $(document).ready(function () {
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "&#xe258;";
-  border: none;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "";
+  content: "\e258";
   font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
+  border: none;
 }
 
 .tabset-dropdown > .nav-tabs > li.active {
@@ -303,12 +304,12 @@ div.tocify {
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
 <div class="row">
-<div class="col-sm-12 col-md-4 col-lg-3">
+<div class="col-xs-12 col-sm-4 col-md-3">
 <div id="TOC" class="tocify">
 </div>
 </div>
 
-<div class="toc-content col-sm-12 col-md-8 col-lg-9">
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -316,7 +317,7 @@ div.tocify {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -327,21 +328,21 @@ div.tocify {
       <ul class="nav navbar-nav">
         <li>
   <a href="index.html">
-    <span class="fas fa-home"></span>
+    <span class="fa fa-home"></span>
      
     Home
   </a>
 </li>
 <li>
   <a href="ctt.html">
-    <span class="fas fa-circle"></span>
+    <span class="fa fa-circle"></span>
      
     CTT
   </a>
 </li>
 <li>
   <a href="irt.html">
-    <span class="fas fa-square"></span>
+    <span class="fa fa-square"></span>
      
     IRT
   </a>
@@ -358,7 +359,8 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Test Equating Based on Classical Test Theory (CTT)</h1>
+<h1 class="title toc-ignore">Test Equating Based on Classical Test
+Theory (CTT)</h1>
 
 </div>
 
@@ -366,13 +368,23 @@ div.tocify {
 <p><br></p>
 <div id="equivalent-random-groups" class="section level1">
 <h1>Equivalent (Random) Groups</h1>
-<p>In an equivalent group design, a random sample of examinees takes form X and a second random sample takes form Y. Because these are random samples from the same population, any differences in the distribution of scores are again assumed to be a function of test difficulty because the randomization should ensure that the two groups are equivalent in the ability being assessed.</p>
+<p>In an equivalent group design, a random sample of examinees takes
+form X and a second random sample takes form Y. Because these are random
+samples from the same population, any differences in the distribution of
+scores are again assumed to be a function of test difficulty because the
+randomization should ensure that the two groups are equivalent in the
+ability being assessed.</p>
 <div id="example-setup" class="section level2">
 <h2>Example Setup</h2>
-<p>First, we will install and activate the <strong>equate</strong> package.</p>
+<p>First, we will install and activate the <strong>equate</strong>
+package.</p>
 <pre class="r"><code>install.packages(&quot;equate&quot;)
 library(&quot;equate&quot;)</code></pre>
-<p>Next, we will import the test forms (X and Y) into R. Each form has 1000 students taking either form X or form Y. Scores in both forms range from 20 to 50 points. In this example, assume that X is the new test form and Y is the reference test form. We want to place scores from form X into the scale of form Y.</p>
+<p>Next, we will import the test forms (X and Y) into R. Each form has
+1000 students taking either form X or form Y. Scores in both forms range
+from 20 to 50 points. In this example, assume that X is the new test
+form and Y is the reference test form. We want to place scores from form
+X into the scale of form Y.</p>
 <pre class="r"><code># Test form X
 formx &lt;- read.csv(&quot;formx.csv&quot;, header = TRUE)
 formy &lt;- read.csv(&quot;formy.csv&quot;, header = TRUE)
@@ -396,7 +408,11 @@ head(formx)</code></pre>
 ## 6    42    y</code></pre>
 <pre class="r"><code># Combine the forms
 formxy &lt;- rbind(formx, formy)</code></pre>
-<p>The <strong>equate</strong> package analyzes score distributions as frequency tables. These frequency tables are created using the <code>as.freqtab</code> function in <strong>equate</strong>. So, our data must be restructured as a frequency table in order to work with the functions in <strong>equate</strong>.</p>
+<p>The <strong>equate</strong> package analyzes score distributions as
+frequency tables. These frequency tables are created using the
+<code>as.freqtab</code> function in <strong>equate</strong>. So, our
+data must be restructured as a frequency table in order to work with the
+functions in <strong>equate</strong>.</p>
 <pre class="r"><code># Add score frequencies to the data
 data &lt;- as.data.frame(table(formxy$score, formxy$form))
 names(data) &lt;- c(&quot;total&quot;, &quot;form&quot;, &quot;count&quot;)
@@ -431,9 +447,9 @@ head(data_x)</code></pre>
 <p>Now let’s see a descriptive summary of the forms.</p>
 <pre class="r"><code># Descriptive summary of the forms
 rbind(form_x = summary(data_x), form_y = summary(data_y))</code></pre>
-<pre><code>##         mean    sd    skew  kurt min max    n
-## form_x 34.92 4.098 0.04374 3.169  23  48 1000
-## form_y 38.84 3.816 0.05785 2.870  28  50 1000</code></pre>
+<pre><code>##          mean       sd       skew     kurt min max    n
+## form_x 34.925 4.098069 0.04373977 3.169021  23  48 1000
+## form_y 38.840 3.815883 0.05785096 2.870284  28  50 1000</code></pre>
 <p>We can also visualize the test score distributions.</p>
 <pre class="r"><code>plot(data_x, main = &quot;Bar plot of the test scores on form X&quot;)</code></pre>
 <p><img src="ctt_files/figure-html/ch5-1.png" width="672" /></p>
@@ -442,10 +458,12 @@ rbind(form_x = summary(data_x), form_y = summary(data_y))</code></pre>
 </div>
 <div id="linear-equating-methods" class="section level2">
 <h2>Linear Equating Methods</h2>
-<p>The linear equating methods include identity (i.e., no equating), mean, linear, and general linear functions.</p>
+<p>The linear equating methods include identity (i.e., no equating),
+mean, linear, and general linear functions.</p>
 <div id="mean-equating" class="section level3">
 <h3>Mean Equating</h3>
-<p>This method adjusts the scores from the new form (X) using the mean difference between the two forms (X and Y) as a fixed constant.</p>
+<p>This method adjusts the scores from the new form (X) using the mean
+difference between the two forms (X and Y) as a fixed constant.</p>
 <pre class="r"><code>mean_yx &lt;- equate(data_x, data_y, type = &quot;mean&quot;)
 mean_yx</code></pre>
 <pre><code>## 
@@ -462,16 +480,20 @@ mean_yx</code></pre>
 ## Coefficients:
 ## intercept     slope        cx        cy        sx        sy 
 ##     3.915     1.000    35.000    35.000    30.000    30.000</code></pre>
-<p>We can also check out the concordance table to see how X scores changed after being equated to form Y. The concordance table indicates that an examinee who got a 20 on form X would be expected to get a 23.92 on form Y. That is, it is a simple transformation of form X + 3.915.</p>
+<p>We can also check out the concordance table to see how X scores
+changed after being equated to form Y. The concordance table indicates
+that an examinee who got a 20 on form X would be expected to get a 23.92
+on form Y. That is, it is a simple transformation of form X + 3.915.</p>
 <pre class="r"><code>head(mean_yx$concordance)</code></pre>
-<pre><code>##   scale    yx
-## 1    20 23.92
-## 2    21 24.92
-## 3    22 25.92
-## 4    23 26.92
-## 5    24 27.92
-## 6    25 28.92</code></pre>
-<p>We can merge the concordance table back to form X so that we can see both old and new scores together for each examinee.</p>
+<pre><code>##   scale     yx
+## 1    20 23.915
+## 2    21 24.915
+## 3    22 25.915
+## 4    23 26.915
+## 5    24 27.915
+## 6    25 28.915</code></pre>
+<p>We can merge the concordance table back to form X so that we can see
+both old and new scores together for each examinee.</p>
 <pre class="r"><code># Save the concordance table
 form_yx &lt;- mean_yx$concordance
 
@@ -481,17 +503,19 @@ colnames(form_yx)[1] &lt;- &quot;total&quot;
 # Merge the concordance table to form x
 data_xy &lt;- merge(data_x, form_yx)
 head(data_xy)</code></pre>
-<pre><code>##   total count    yx
-## 1    20     0 23.92
-## 2    21     0 24.92
-## 3    22     0 25.92
-## 4    23     2 26.92
-## 5    24     6 27.92
-## 6    25     5 28.92</code></pre>
+<pre><code>##   total count     yx
+## 1    20     0 23.915
+## 2    21     0 24.915
+## 3    22     0 25.915
+## 4    23     2 26.915
+## 5    24     6 27.915
+## 6    25     5 28.915</code></pre>
 </div>
 <div id="linear-equating" class="section level3">
 <h3>Linear Equating</h3>
-<p>This method adjusts the scores from the new form (X) using both the mean and standard deviation differences between the two forms (X and Y) using a linear equation.</p>
+<p>This method adjusts the scores from the new form (X) using both the
+mean and standard deviation differences between the two forms (X and Y)
+using a linear equation.</p>
 <pre class="r"><code>linear_yx &lt;- equate(data_x, data_y, type = &quot;linear&quot;)
 linear_yx</code></pre>
 <pre><code>## 
@@ -508,10 +532,12 @@ linear_yx</code></pre>
 ## Coefficients:
 ## intercept     slope        cx        cy        sx        sy 
 ##    6.3199    0.9311   35.0000   35.0000   30.0000   30.0000</code></pre>
-<p>We can check out the equated scores against the original scores as follows:</p>
+<p>We can check out the equated scores against the original scores as
+follows:</p>
 <pre class="r"><code>plot(linear_yx)</code></pre>
 <p><img src="ctt_files/figure-html/ch10a-1.png" width="672" /></p>
-<p>We can also run a bootstrap for the equating process and create a standard error plot:</p>
+<p>We can also run a bootstrap for the equating process and create a
+standard error plot:</p>
 <pre class="r"><code>linear_yx_boot &lt;- equate(data_x, data_y, type = &quot;linear&quot;, boot = TRUE, reps = 5)
 plot(linear_yx_boot, out = &quot;se&quot;)</code></pre>
 <p><img src="ctt_files/figure-html/ch10b-1.png" width="672" /></p>
@@ -519,17 +545,26 @@ plot(linear_yx_boot, out = &quot;se&quot;)</code></pre>
 </div>
 <div id="non-linear-equating" class="section level2">
 <h2>Non-Linear Equating</h2>
-<p>The nonlinear equating methods include equipercentile, circle-arc, and composite functions.</p>
+<p>The nonlinear equating methods include equipercentile, circle-arc,
+and composite functions.</p>
 <div id="equipercentile-equating" class="section level3">
 <h3>Equipercentile Equating</h3>
-<p>Equipercentile equating works by breaking up the scores on the X and Y forms into percentiles. Then percentiles of form X are matched to the percentiles on form Y.</p>
+<p>Equipercentile equating works by breaking up the scores on the X and
+Y forms into percentiles. Then percentiles of form X are matched to the
+percentiles on form Y.</p>
 <pre class="r"><code>equi_yx &lt;- equate(data_x, data_y, type = &quot;equipercentile&quot;)</code></pre>
-<p>Now, let’s see how the X scores have been adjusted based on the percentile ranks of forms X and Y. The following figure shows that the biggest discrepancies between these two functions are at the tails of the distribution.</p>
+<p>Now, let’s see how the X scores have been adjusted based on the
+percentile ranks of forms X and Y. The following figure shows that the
+biggest discrepancies between these two functions are at the tails of
+the distribution.</p>
 <pre class="r"><code>plot(equi_yx$concordance$yx ~ equi_yx$concordance$scale, type = &quot;p&quot;, xlab = &quot;Form X scores&quot;, 
      ylab = &quot;Adjusted X Scores on Form Y&quot;, ylim = c(20, 55))
 points(linear_yx$concordance$yx ~ linear_yx$concordance$scale, pch = 4)</code></pre>
 <p><img src="ctt_files/figure-html/ch12-1.png" width="672" /></p>
-<p>We can also add loglinear smoothing into the process and compare it against the regular equipercentile. The smooth line indicates the equipercentile with loglinear smoothing whereas the straight line (with a breaking point) indicates the regular equipercentile.</p>
+<p>We can also add loglinear smoothing into the process and compare it
+against the regular equipercentile. The smooth line indicates the
+equipercentile with loglinear smoothing whereas the straight line (with
+a breaking point) indicates the regular equipercentile.</p>
 <pre class="r"><code>equismooth_yx &lt;- equate(data_x, data_y, type = &quot;equipercentile&quot;, smooth = &quot;loglin&quot;, degree = 3)
 
 # Compare equating functions
@@ -540,7 +575,18 @@ plot(equi_yx, equismooth_yx, addident = FALSE)</code></pre>
 </div>
 <div id="nonequivalent-groups" class="section level1">
 <h1>Nonequivalent Groups</h1>
-<p>In a nonequivalent group design, the population of examinees taking the different forms cannot be assumed to be from the same population. Therefore, potential differences in their abilities on the construct(s) must be accounted for. When a nonequivalent group design is used, a particular equating method must be specified. Generally, these methods work by relating the total scores on form X and form Y through the scores on a common set of items appearing on both forms (i.e., the common anchor scores) and the creation of a weighted, synthetic population (see <a href="https://www.researchgate.net/publication/309364327_equate_An_R_Package_for_Observed-Score_Linking_and_Equating">Albano (2016)</a> for more information on these methods). The equating methods available in the <strong>equate</strong> package are:</p>
+<p>In a nonequivalent group design, the population of examinees taking
+the different forms cannot be assumed to be from the same population.
+Therefore, potential differences in their abilities on the construct(s)
+must be accounted for. When a nonequivalent group design is used, a
+particular equating method must be specified. Generally, these methods
+work by relating the total scores on form X and form Y through the
+scores on a common set of items appearing on both forms (i.e., the
+common anchor scores) and the creation of a weighted, synthetic
+population (see <a
+href="https://www.researchgate.net/publication/309364327_equate_An_R_Package_for_Observed-Score_Linking_and_Equating">Albano
+(2016)</a> for more information on these methods). The equating methods
+available in the <strong>equate</strong> package are:</p>
 <ul>
 <li>Tucker</li>
 <li>Nominal</li>
@@ -549,28 +595,44 @@ plot(equi_yx, equismooth_yx, addident = FALSE)</code></pre>
 <li>Frequency</li>
 <li>Chained</li>
 </ul>
-<p>The following table shows the combinations of these methods with the other equating types that we have seen so far:</p>
+<p>The following table shows the combinations of these methods with the
+other equating types that we have seen so far:</p>
 <p><img src="images/neat.png" /></p>
 <div id="example-setup-1" class="section level2">
 <h2>Example Setup</h2>
-<p>The negd data set contains data on 2,000 examinees responding to 35 questions on a particular form of the test (either form X or form Y). Questions 1 through 25, labeled q.1, …, q.25, are unique to each form, while questions 26 through 35, labeled a.1, …, a.10, are the common anchor items.</p>
+<p>The negd data set contains data on 2,000 examinees responding to 35
+questions on a particular form of the test (either form X or form Y).
+Questions 1 through 25, labeled q.1, …, q.25, are unique to each form,
+while questions 26 through 35, labeled a.1, …, a.10, are the common
+anchor items.</p>
 <pre class="r"><code>negd &lt;- read.csv(&quot;negd.csv&quot;, header = TRUE)
 head(negd)</code></pre>
-<pre><code>##   q.1 q.2 q.3 q.4 q.5 q.6 q.7 q.8 q.9 q.10 q.11 q.12 q.13 q.14 q.15 q.16 q.17 q.18 q.19 q.20 q.21
-## 1   1   0   0   0   1   0   1   0   0    0    1    0    0    1    1    1    1    0    0    0    1
-## 2   0   0   1   1   1   0   0   0   1    0    1    1    1    0    0    0    0    0    1    0    0
-## 3   1   0   1   1   1   1   1   1   1    0    0    1    1    1    0    0    0    0    0    0    1
-## 4   0   1   1   0   0   0   0   1   0    0    0    0    1    1    0    1    0    0    0    1    1
-## 5   0   0   1   0   0   1   0   1   0    1    0    0    1    0    0    0    1    0    0    1    0
-## 6   0   0   1   1   1   0   1   0   0    0    1    1    1    1    0    1    1    1    1    0    1
-##   q.22 q.23 q.24 q.25 a.1 a.2 a.3 a.4 a.5 a.6 a.7 a.8 a.9 a.10 form
-## 1    1    0    1    0   0   0   0   0   0   0   0   1   0    0    x
-## 2    1    0    1    1   1   1   0   0   1   0   1   0   1    0    x
-## 3    1    0    0    0   0   1   1   1   1   0   1   0   0    1    x
-## 4    1    0    1    0   0   1   1   1   0   1   1   1   1    0    x
-## 5    1    0    1    1   0   0   1   1   0   1   0   0   0    1    x
-## 6    1    1    0    1   0   1   1   1   1   1   1   0   1    1    x</code></pre>
-<p>Because the data are in a person-by-item format, for each person, we need to calculate their total score on the form, excluding the common anchor items, then their score on the common anchor items. Once this is done, frequency tables can be created, plotted, and then passed onto the <strong>equate</strong> function.</p>
+<pre><code>##   q.1 q.2 q.3 q.4 q.5 q.6 q.7 q.8 q.9 q.10 q.11 q.12 q.13 q.14 q.15 q.16 q.17
+## 1   1   0   0   0   1   0   1   0   0    0    1    0    0    1    1    1    1
+## 2   0   0   1   1   1   0   0   0   1    0    1    1    1    0    0    0    0
+## 3   1   0   1   1   1   1   1   1   1    0    0    1    1    1    0    0    0
+## 4   0   1   1   0   0   0   0   1   0    0    0    0    1    1    0    1    0
+## 5   0   0   1   0   0   1   0   1   0    1    0    0    1    0    0    0    1
+## 6   0   0   1   1   1   0   1   0   0    0    1    1    1    1    0    1    1
+##   q.18 q.19 q.20 q.21 q.22 q.23 q.24 q.25 a.1 a.2 a.3 a.4 a.5 a.6 a.7 a.8 a.9
+## 1    0    0    0    1    1    0    1    0   0   0   0   0   0   0   0   1   0
+## 2    0    1    0    0    1    0    1    1   1   1   0   0   1   0   1   0   1
+## 3    0    0    0    1    1    0    0    0   0   1   1   1   1   0   1   0   0
+## 4    0    0    1    1    1    0    1    0   0   1   1   1   0   1   1   1   1
+## 5    0    0    1    0    1    0    1    1   0   0   1   1   0   1   0   0   0
+## 6    1    1    0    1    1    1    0    1   0   1   1   1   1   1   1   0   1
+##   a.10 form
+## 1    0    x
+## 2    0    x
+## 3    1    x
+## 4    0    x
+## 5    1    x
+## 6    1    x</code></pre>
+<p>Because the data are in a person-by-item format, for each person, we
+need to calculate their total score on the form, excluding the common
+anchor items, then their score on the common anchor items. Once this is
+done, frequency tables can be created, plotted, and then passed onto the
+<strong>equate</strong> function.</p>
 <pre class="r"><code># Calculate total scores based on unique items
 negd$total &lt;- rowSums(negd[, 1:25])
 
@@ -580,10 +642,18 @@ negd$anchor &lt;- rowSums(negd[, 26:35])
 # Create frequency tables (total score range: 0-25; anchor score range: 0-10)
 negd_x &lt;- freqtab(negd[1:1000, c(&quot;total&quot;, &quot;anchor&quot;)], scales = list(0:25, 0:10))
 negd_y &lt;- freqtab(negd[1001:2000, c(&quot;total&quot;, &quot;anchor&quot;)], scales = list(0:25, 0:10))</code></pre>
-<p>Now we will see a scatterplot of the common anchor scores on form X against the total scores on form X. Plotted along the axes are the marginal distributions of these scores.</p>
+<p>Now we will see a scatterplot of the common anchor scores on form X
+against the total scores on form X. Plotted along the axes are the
+marginal distributions of these scores.</p>
 <pre class="r"><code>plot(negd_x, xlab = &quot;Total Scores Form X&quot;, ylab = &quot;Common Anchor Scores Form X&quot;)</code></pre>
 <p><img src="ctt_files/figure-html/ch15-1.png" width="672" /></p>
-<p>The two distributions are roughly normal, with some irregularities for the total scores for form X (note the presence of various peaks near the center of this distribution). Because there are irregularities, assumed to arise from measurement error, presmoothing could be performed. There are a variety of presmoothing options available in equate. One option involves fitting a log linear model. Log linear presmoothing can be specified for forms X and Y as follows:</p>
+<p>The two distributions are roughly normal, with some irregularities
+for the total scores for form X (note the presence of various peaks near
+the center of this distribution). Because there are irregularities,
+assumed to arise from measurement error, presmoothing could be
+performed. There are a variety of presmoothing options available in
+equate. One option involves fitting a log linear model. Log linear
+presmoothing can be specified for forms X and Y as follows:</p>
 <pre class="r"><code>smooth_x &lt;- presmoothing(negd_x, smoothmethod = &quot;loglinear&quot;)
 smooth_y &lt;- presmoothing(negd_y, smoothmethod = &quot;loglinear&quot;)</code></pre>
 <p>Now, let’s check out the plot again.</p>
@@ -595,33 +665,33 @@ smooth_y &lt;- presmoothing(negd_y, smoothmethod = &quot;loglinear&quot;)</code>
 <p>Now we will use linear equating based on the Tucker method.</p>
 <pre class="r"><code>negd_tucker &lt;- equate(negd_x, negd_y, type = &quot;linear&quot;, method = &quot;tucker&quot;)
 negd_tucker$concordance</code></pre>
-<pre><code>##    scale     yx   se.n   se.g
-## 1      0  4.439 0.3481 0.3400
-## 2      1  5.221 0.3261 0.3197
-## 3      2  6.002 0.3045 0.2997
-## 4      3  6.784 0.2832 0.2800
-## 5      4  7.565 0.2625 0.2608
-## 6      5  8.347 0.2423 0.2421
-## 7      6  9.128 0.2230 0.2241
-## 8      7  9.910 0.2047 0.2070
-## 9      8 10.691 0.1877 0.1909
-## 10     9 11.473 0.1724 0.1763
-## 11    10 12.254 0.1593 0.1634
-## 12    11 13.035 0.1490 0.1527
-## 13    12 13.817 0.1421 0.1447
-## 14    13 14.598 0.1391 0.1399
-## 15    14 15.380 0.1402 0.1386
-## 16    15 16.161 0.1454 0.1408
-## 17    16 16.943 0.1542 0.1465
-## 18    17 17.724 0.1660 0.1553
-## 19    18 18.506 0.1804 0.1666
-## 20    19 19.287 0.1966 0.1800
-## 21    20 20.069 0.2144 0.1951
-## 22    21 20.850 0.2333 0.2114
-## 23    22 21.632 0.2530 0.2288
-## 24    23 22.413 0.2735 0.2470
-## 25    24 23.195 0.2945 0.2658
-## 26    25 23.976 0.3160 0.2852</code></pre>
+<pre><code>##    scale        yx      se.n      se.g
+## 1      0  4.439083 0.3480743 0.3400317
+## 2      1  5.220574 0.3261043 0.3197119
+## 3      2  6.002065 0.3044597 0.2996877
+## 4      3  6.783557 0.2832149 0.2800225
+## 5      4  7.565048 0.2624671 0.2607975
+## 6      5  8.346539 0.2423440 0.2421177
+## 7      6  9.128031 0.2230147 0.2241194
+## 8      7  9.909522 0.2047041 0.2069804
+## 9      8 10.691013 0.1877108 0.1909323
+## 10     9 11.472505 0.1724244 0.1762733
+## 11    10 12.253996 0.1593373 0.1633778
+## 12    11 13.035487 0.1490297 0.1526932
+## 13    12 13.816978 0.1421079 0.1447100
+## 14    13 14.598470 0.1390783 0.1398916
+## 15    14 15.379961 0.1401934 0.1385683
+## 16    15 16.161452 0.1453580 0.1408389
+## 17    16 16.942944 0.1541655 0.1465363
+## 18    17 17.724435 0.1660372 0.1552838
+## 19    18 18.505926 0.1803692 0.1666016
+## 20    19 19.287418 0.1966241 0.1800056
+## 21    20 20.068909 0.2143650 0.1950662
+## 22    21 20.850400 0.2332530 0.2114297
+## 23    22 21.631892 0.2530314 0.2288166
+## 24    23 22.413383 0.2735071 0.2470111
+## 25    24 23.194874 0.2945347 0.2658473
+## 26    25 23.976366 0.3160041 0.2851982</code></pre>
 </div>
 <div id="comparing-multiple-methods" class="section level2">
 <h2>Comparing Multiple Methods</h2>
@@ -712,6 +782,9 @@ $(document).ready(function () {
 
 <script>
 $(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
 
     // move toc-ignore selectors from section div to header
     $('div.section.toc-ignore')

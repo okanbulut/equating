@@ -35,7 +35,7 @@ output: html_document
 
 * Christopher Desjardins and Okan Bulut's [Handbook of Educational Measurement and Psychometrics Using R](https://www.routledge.com/Handbook-of-Educational-Measurement-and-Psychometrics-Using/Desjardins-Bulut/p/book/9780367734671)
 
-* CCSSO's guidelines on equating: [A Practitioners' Introduction to Equating](https://ccsso.org/sites/default/files/2018-06/A%20Practitioners%20Introduction%20to%20Equating%20revised%20edition.pdf) 
+* CCSSO's guidelines on equating: [A Practitioners' Introduction to Equating](https://files.eric.ed.gov/fulltext/ED544690.pdf) 
 
 * Anthony Albano's [vignette](https://cran.r-project.org/web/packages/equate/vignettes/equate-jss.pdf) for the **equate** package
 
